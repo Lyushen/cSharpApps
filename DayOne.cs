@@ -9,21 +9,21 @@ internal class Program
         Console.WriteLine("5. Hello, World!\rGoodbye, World!");
         Console.Write("6. Hello, World!\nGoodbye, World! same\n\rGoodbye, World! same");
         Console.WriteLine("7. Tab character\tcould be done by \\t");
-        Console.WriteLine("8. File is C:\test.txt\t but to litteral using \\\\t ");
-        Console.WriteLine(@"9 Use @ before string """" as litteral path in the string"); //we use @ before string to treat the string symbols literally
+        Console.WriteLine("8. File is C:\test.txt\t but to literal using \\\\t ");
+        Console.WriteLine(@"9 Use @ before string """" as literal path in the string"); //we use @ before string to treat the string symbols literally
         /*
          comment some code
          * some comment
         */
         string myMessage = "10. Use of string"; //https://www.google.com/search?q=hungarian+notation+C%23
         Console.WriteLine(myMessage);
-        string endMessage = "10. Our end-message varriable";
+        string endMessage = "10. Our end-message variable";
         Console.WriteLine(endMessage);
 
         string myMessage11 = "11. Use of Read method";
         Console.WriteLine(myMessage11);
         Console.ReadLine();
-        string endMessage11 = "11. Our end-message varriable of Read Method";
+        string endMessage11 = "11. Our end-message variable of Read Method";
         Console.WriteLine(endMessage11);
 
         Console.WriteLine("12. Testing ReadLine method and wait only for Enter key");
@@ -61,7 +61,7 @@ internal class Program
         int readFirstNumber16 = 0;
         bool firstNumberSuccess16 = false;
         while (!firstNumberSuccess16)
-        { // Ask user again to input correct number if error appears
+        { // Ask the user again to input the correct number if an error appears
             Console.Write("Please enter the first number and press Enter > ");
             try
             {
@@ -92,8 +92,8 @@ internal class Program
         Console.WriteLine($"The sum of {readFirstNumber16} and {readSecondNumber16} is {numberAnswers16}.");
         Console.Clear();
 
-        Console.WriteLine("17. User inputs two numbers and the output is sum, subtract and multiply.\n" +
-            "Adjusted it to use as a function that read until correct value will be entered.");
+        Console.WriteLine("17. The user inputs two numbers and the output is sum, subtract and multiply.\n" +
+            "Adjusted it to use as a function that reads until correct value will be entered.");
         int readFirstNumber17 = ReAskUser("Please enter the first number and press Enter > ");
         int readSecondNumber17 = ReAskUser("Please enter the second number and press Enter > ");
         Console.WriteLine($"The sum of {readFirstNumber17} and {readSecondNumber17} is {readFirstNumber17 + readSecondNumber17}.");
@@ -101,12 +101,12 @@ internal class Program
         Console.WriteLine($"The product is {readFirstNumber17 * readSecondNumber17}.");
         Console.WriteLine($"The difference is {Math.Abs(readFirstNumber17 - readSecondNumber17)}.");
 
-        Console.WriteLine("18. Divistion answer requires to use the convertation to float, double and decimal numbers");
-        int divisionAnswerInt = readFirstNumber17 / readSecondNumber17; //intitial type doesn't metter, at least one of them should be in init 
+        Console.WriteLine("18. Division answer requires to use the conversation to float, double and decimal numbers");
+        int divisionAnswerInt = readFirstNumber17 / readSecondNumber17; //initial type doesn't matter, at least one of them should be in init 
         Console.WriteLine($"The division is {divisionAnswerInt.ToString()}."); // output still is not float
         float divisionAnswerFloat = (float)readFirstNumber17 / readSecondNumber17;
         divisionAnswerFloat = readFirstNumber17 / (float)readSecondNumber17;
-        double divisionAnswerDouble = (double)readFirstNumber17 / (double)readSecondNumber17; //convert at least one number to desitable format
+        double divisionAnswerDouble = (double)readFirstNumber17 / (double)readSecondNumber17; //convert at least one number to desirable format
         // int divisionAnswer3 = readFirstNumber17 / (float)readSecondNumber17;
         decimal divisionAnswerDecimal = readFirstNumber17 / (decimal)readSecondNumber17;
         Console.WriteLine($"The division for different types are:\nDouble: {divisionAnswerDouble}.\nDecimal: {divisionAnswerDecimal}.\nFloat: {divisionAnswerFloat}.");
