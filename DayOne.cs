@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 
 internal class Program
 {
@@ -7,11 +8,106 @@ internal class Program
     private static void Main(string[] args)
     {
         // DayOne();
-        DayTwo();
+        //DayTwo();
+        DayThree();
         Console.WriteLine("\nPress any key to exit...");
         Console.ReadKey();
         Environment.Exit(0);
     }
+    static void DayThree()
+    {
+        /* asking user for their age 
+         * 
+         * 
+         * 
+         
+        List method
+
+        List <int> age = new List<int>();
+        age.Add(ReAskUser("Please enter the number of users"));
+        do
+        {
+            age.Add(ReAskUser($"Please enter age for student{age.Count}"));
+        }
+        while (age.Count <= age[0]);
+        Console.Write($"Age count is '{age.Count}' and total students are '{age[0]}', and the list values are ");
+        age.ForEach(p => Console.WriteLine(p+" "));
+        */
+        int[] age = new int[ReAskUser("Please enter the number of people")];
+        int[] catChild = new int[] { };
+        int[] catTeenager = new int[] { };
+        int[] catYoungAdult = new int[] { };
+        int[] catAdult = new int[] { };
+        int[] catOlderCitizen = new int[] { };
+
+        for (int i = 0; i < age.Length; i++)
+        {
+            age[i] = ReAskUser($"Please enter age for person {i+1}");
+            if (age[i] <= 0 ) {
+                Console.WriteLine($"Error. The age for person {i+1} is could not be 0 or less");
+            }
+            else if (age[i] >=0 && age[i] <= 12 ) // Child Category
+            {
+                catChild = catChild.Concat(new int[] { age[i] }).ToArray();
+            }
+            else if (age[i] >=13 && age[i] <= 19 ) // Teenager Category
+            {
+                catTeenager = catTeenager.Concat(new int[] { age[i] }).ToArray();
+            }
+            else if (age[i] >=20 && age[i] <= 24) // Young Adult Category
+            {
+                catYoungAdult = catYoungAdult.Concat(new int[] { age[i] }).ToArray();
+            }
+            else if (age[i] >=25 && age[i] <= 65) // Adult Category
+            {
+                catAdult = catAdult.Concat(new int[] { age[i] }).ToArray();
+            }
+            else if (age[i] >=66) // Older Citizen Category
+            {
+                catOlderCitizen = catOlderCitizen.Concat(new int[] { age[i] }).ToArray();
+            }
+        }
+
+        Console.Clear();
+        //Console.WriteLine(); //Cleared screen
+        //Console.WriteLine($"Category Child: [{{0}}]", string.Join(", ", catChild));
+        //Console.Write($"Age average is '{age.Average()}' of total students are '{age.Length}', and the list values are [{{0}}]", string.Join(", ", age));
+        PrintStats("", age);
+        PrintStats("Child", catChild);
+        PrintStats("Teenager", catTeenager);
+        PrintStats("Young Adult", catYoungAdult);
+        PrintStats("Adult", catAdult);
+        PrintStats("Older Citizen", catOlderCitizen);
+        //Console.WriteLine($"The mean Age is {age} years and {meanAgeDays} days");
+    }
+
+    static void PrintStats(string category, params int[] myArray)
+    {
+        if (myArray.Length > 0) 
+        {
+            if (category != "") Console.WriteLine($"Output for category {category}:"); // (category != $"for {category}" ? "" : "")
+            Console.WriteLine($"Total Number is {myArray.Length}");
+            Console.WriteLine($"Oldest Person's age is {myArray.Max()} for person {myArray.ToList().IndexOf(myArray.Max())}");
+            Console.WriteLine($"Youngest Person's age is {myArray.Min()} for person {myArray.ToList().IndexOf(myArray.Min())}");
+            //Console.WriteLine($"The mean age is '{myArray.Average()}'");
+            // My method
+            double meanAge = myArray.Average();
+            int meanAgeYears = (int)meanAge;
+            int meanAgeDays = Convert.ToInt16((meanAge - meanAgeYears) * 365);
+
+            Console.WriteLine($"The mean Age is {meanAgeYears} years and {meanAgeDays} days");
+            // Modulus operator
+            double meanAgeDaysTotal = myArray.Average() * 365;
+            int meanAgeYearsM = (int)(meanAgeDaysTotal / 365);
+            int meanAgeDaysM = (int)(meanAgeDaysTotal % 365);
+
+            Console.WriteLine($"The Modeular mean of Age is {meanAgeYearsM} years and {meanAgeDaysM} days");
+            Console.WriteLine();
+        }
+    }
+
+
+
     static void DayTwo()
     {
         //Task 1
@@ -55,13 +151,13 @@ internal class Program
         Console.WriteLine($"Student scored {enteredMark} and {(resultMakr ? "Passed the test" : "was Unseccessful in the test")}");
         Console.Clear();
 
-        //Task 8 IF 
+        /*//Task 8 IF 
         Console.WriteLine("8. If student passed the test and give them a grade");
         const int passMarkDistinction8 = 80;
         const int passMarkMerit8 = 65;
         const int passMark8 = 50;
         int enteredMark8;
-        /* do
+         do
          {
              enteredMark8 = ReAskUser("Please enter the marks achieved between 0 and 100");
          }
@@ -255,8 +351,7 @@ internal class Program
         decimal divisionAnswerDecimal = readFirstNumber17 / (decimal)readSecondNumber17;
         Console.WriteLine($"The division for different types are:\nDouble: {divisionAnswerDouble}.\nDecimal: {divisionAnswerDecimal}.\nFloat: {divisionAnswerFloat}.");
     }
-
-    static int ReAskUser(string messageToUser, int? range=100)
+    static int ReAskUser(string messageToUser)
     {
         int number = 0;
         bool numberSuccess = false;
