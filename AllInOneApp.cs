@@ -19,7 +19,7 @@ internal class Program
     const int IEYoungAdult = (int)CategoryID.YoungAdult;
     const int IEAdult = (int)CategoryID.Adult;
     const int IEOlder = (int)CategoryID.Older;
-    // my const approach
+    // my const approach    
     public const int IGeneral = 0;
     public const int IChild = 1;
     public const int ITeenager = 2;
@@ -53,8 +53,8 @@ internal class Program
     }
     static void DayFive() // Improvements to day four code
     {
-        // if the function returns true or false it should start with isPolledPeople?
-        //CategoryID categoryID;
+        /* if the function returns true or false it should start with isPolledPeople?
+        
         //categoryID = personAge switch
         //{
         //    < 13 => CategoryID.Child,
@@ -64,7 +64,168 @@ internal class Program
         //    _ => CategoryID.Older
         //};
 
-    }
+        Find our company's Code Convention
+        Pick a style and stick to it
+        Do not be ambigious with naming
+
+        Overloading when a method can be called with different arguments and scenarios.
+
+        string myName = "Tom";
+        string firstLetter = myName[0]; ?? char explanation
+
+        int 1someVar = 0; // invalid
+        int _1 = 0; // valid
+        int them-all = 0; // invalid
+        int ______ = 0; // valid
+        int _size = 0; // valid
+
+        char some = 'a'; == string some = 'a';
+
+        float pi = 3.14f;
+        Console.WriteLine(pi);
+
+        */
+        //DayFiveTeacherApproach2();
+        //RollDiceApproach1(); // Task RollDice
+        //RollDiceApproach2(); // Task RollDice
+        RollDiceValidation();
+
+        static void RollDiceValidation()
+        {
+            int[] counter = new int[6];
+            int testRuns = 10000000;
+
+            for (int i = 0; i < testRuns; i++)
+            {
+                switch (RollDice())
+                {
+                    case 1:counter[0]++;break;
+                    case 2:counter[1]++;break;
+                    case 3:counter[2]++;break;
+                    case 4:counter[3]++;break;
+                    case 5:counter[4]++;break;
+                    case 6:counter[5]++;break;
+                }
+            }
+            Console.WriteLine($"Through {testRuns} runs:");
+            for (int i = 0; i < counter.Length; i++)
+            {
+                Console.WriteLine($"The probability chance for number {i + 1} is {(double)counter[i] / testRuns * 100:0.00}%");
+            }
+            static int RollDice()
+            {
+                Random randomNumber = new Random();
+                return randomNumber.Next(1, 6);
+            }
+        }
+        static void RollDiceApproach2()
+        {
+
+            int counter = 0;
+            while (counter < 10)
+            {
+                counter++;
+                Console.WriteLine($"Roll # {counter} => Dice value: {getDiceValue()}");
+            }
+            static int getDiceValue()
+            {
+                Random randomNumber = new Random();
+                switch (randomNumber.NextDouble())
+                {
+                    case < 0.16666: return 1;
+                    case <= 0.33333: return 2;
+                    case <= 0.50000: return 3;
+                    case <= 0.66666: return 4;
+                    case <= 0.83333: return 5;
+                    default: return 6;
+                }
+            }
+        }
+        static void RollDiceApproach1()
+        {
+            bool isRollDice = true;
+            Random randomNumber = new Random();
+            do
+            {
+                Console.Write("Do you wish to roll the dice? (Y/N) > ");
+                isRollDice = Console.ReadLine().ToLower() == "y";
+                Console.WriteLine($"Your dice is {randomNumber.Next(1, 6)}");
+            }
+            while (isRollDice);
+        }
+
+        static void DayFiveTeacherApproach2()
+        {
+            int[] numberPolled = new int[6];
+            int[] totalAges = new int[6];
+            int[] youngestAges = new int[6];
+            int[] oldestAges = new int[6];
+            string[] Categories = new string[] { "General", "Child", "Teenager", "Young Adult", "Adult", "Older Citizen" };
+            while (PersonPoll())
+            {
+                Console.Write($"What is the age of person >");
+                int personAge = Convert.ToInt32(Console.ReadLine());
+                UpdateCategoryValues(CategoryID.General, personAge, numberPolled, totalAges, youngestAges, oldestAges);
+                // Find the spceific category based on the age entered and update values
+                UpdateCategoryValues(AgeCategory(personAge), personAge, numberPolled, totalAges, youngestAges, oldestAges);
+            }
+            
+            static CategoryID AgeCategory(int age)
+            {
+                switch (age)  {
+                    case < 13:  return CategoryID.Child;
+                    case <= 19: return CategoryID.Teenager;
+                    case <= 25: return CategoryID.YoungAdult;
+                    case < 65:  return CategoryID.Adult;
+                    default:    return CategoryID.Older;
+                }
+            } // AgeCategory();
+
+            DisplayResults(Categories, totalAges, numberPolled, youngestAges, oldestAges);
+
+            static void DisplayResults(string[] category, int[] totalAge, int[] pollCount, int[] youngestAge, int[] oldestAge)
+            {
+            for (int i = 0; i < pollCount.Length; i++)
+            {
+                Console.WriteLine($"========== {category[i]} ==============");
+                if (pollCount[i] > 0)
+                {
+                    Console.WriteLine($"Number polled is {pollCount[i]}");
+                    Console.WriteLine($"The youngest person is aged {youngestAge[i]}");
+                    Console.WriteLine($"The oldest person is aged {oldestAge[i]}");
+                    float meanAge = (float)totalAge[i] / pollCount[i];
+                    Console.WriteLine($"The mean age is {meanAge}");
+                }
+                Console.WriteLine("===============================}");
+            }
+            } //DisplayResults
+            static bool PersonPoll()
+            {
+                Console.Write("have you someone to poll? (Y/N) >");
+                return Console.ReadLine().ToUpper() == "Y";
+
+            } //PersonPoll
+            static void UpdateCategoryValues(CategoryID categoryID, int ageEntered, int[] numberPolled, int[] totalAges, int[] youngestAges, int[] oldestAges)
+            {
+            
+                numberPolled[(int)categoryID]++;
+                totalAges[(int)(categoryID)] += ageEntered;
+
+                if (numberPolled[(int)categoryID] == 1)
+                {
+                    youngestAges[(int)categoryID] = ageEntered;
+                }
+                if (ageEntered > oldestAges[(int)categoryID])
+                {
+                    oldestAges[(int)(categoryID)] = ageEntered;
+                }
+                if ((ageEntered < youngestAges[(int)categoryID]))
+                {
+                    youngestAges[(int)categoryID] = ageEntered;
+                }
+            } // UpdateCategoryValues()
+        } // DayThreeTeacherApproach2()
+    }//   DayFive()
     static void DayFour()
     {
         // DayFourApproach3();
@@ -507,7 +668,7 @@ internal class Program
                     categoryID = CategoryID.Older;
                 }
                 UpdateCategoryValues(categoryID, personAge, numberPolled, totalAges, youngestAges, oldestAges);
-            }
+            } //while()
             for (int i = 0; i < numberPolled.Length; i++)
             {
                 DisplayResults(Categories[i], totalAges[i], numberPolled[i], youngestAges[i], oldestAges[i]);
@@ -524,13 +685,13 @@ internal class Program
                     Console.WriteLine($"The mean age is {meanAge}");
                 }
                 Console.WriteLine("===============================}");
-            }
+            }//DisplayResults
             static bool PersonPoll()
             {
                 Console.Write("have you someone to poll? (Y/N) >");
                 return Console.ReadLine().ToUpper() == "Y";
 
-            }
+            } //PersonPoll
             static void UpdateCategoryValues(CategoryID categoryID, int ageEntered, int[] numberPolled, int[] totalAges, int[] youngestAges, int[] oldestAges)
             {
                 numberPolled[(int)categoryID]++;
@@ -547,10 +708,9 @@ internal class Program
                 {
                     youngestAges[(int)categoryID] = ageEntered;
                 }
-            }
-
-        }
-    }
+            } // UpdateCategoryValues()
+        } // DayThreeTeacherApproach2()
+    } // DayFour()
     static void DayThree()
     {
         // DayThreeApproach1();
@@ -943,4 +1103,4 @@ internal class Program
             Console.WriteLine();
         }
     }
-}
+} // class Program
