@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using static Program;
+
 internal class Program
 {
     public enum CategoryID : int //enum approach
@@ -31,7 +33,7 @@ internal class Program
     int[] catYoungAdult = new int[6];
     int[] catAdult = new int[6];
     int[] catOlder = new int[6];
-    string[] catName = new string[] {"General", "Child", "Teenager", "YoungAdult", "Adult", "Older"};
+    string[] catName = new string[] { "General", "Child", "Teenager", "YoungAdult", "Adult", "Older" };
 
     const int CLASSSIZE = 10;
     static Stopwatch stopwatch = Stopwatch.StartNew(); //Diagnostic mesuares. Start measuring time
@@ -41,18 +43,33 @@ internal class Program
         // Program.DayOne();
         // Program.DayTwo();
         // Program.DayThree();
-        Program.DayFour();
+        // Program.DayFour();
+        Program.DayFive();
 
         stopwatch.Stop();
         Console.WriteLine($"\nPress any key to exit...\tProcessing time: {stopwatch.ElapsedMilliseconds} ms");
         Console.ReadKey();
         Environment.Exit(0);
     }
+    static void DayFive() // Improvements to day four code
+    {
+        // if the function returns true or false it should start with isPolledPeople?
+        //CategoryID categoryID;
+        //categoryID = personAge switch
+        //{
+        //    < 13 => CategoryID.Child,
+        //    >= 13 and <= 19 => CategoryID.Teenager,
+        //    > 19 and <= 25 => CategoryID.YoungAdult,
+        //    > 25 and < 65 => CategoryID.Adult,
+        //    _ => CategoryID.Older
+        //};
+
+    }
     static void DayFour()
     {
         // DayFourApproach3();
         // DayFourApproach4();
-        DayFourApproach5();
+        DayThreeTeacherApproach2();
         static void DayFourApproach3()
         {
             int[] age = new int[ReAskNumber("Please enter the number of people")];
@@ -254,6 +271,285 @@ internal class Program
             PrintStats("Adult", catAdult);
             PrintStats("Older Citizen", catOlderCitizen);*/
         }
+        static void DayThreeTeacherApproach1()
+        {
+            int numberPeoplePolled = 0; // Number of People Polled
+            int totalAge = 0;
+            int oldestAge = 0;
+            int youngestAge = 0;
+            int numberPeoplePolledChild = 0; // Number of People Polled
+            int totalAgeChild = 0;
+            int oldestAgeChild = 0;
+            int youngestAgeChild = 0;
+            int numberPeoplePolledTeenager = 0; // Number of People Polled
+            int totalAgeTeenager = 0;
+            int oldestAgeTeenager = 0;
+            int youngestAgeTeenager = 0;
+            int numberPeoplePolledYoungAdult = 0; // Number of People Polled
+            int totalAgeYoungAdult = 0;
+            int oldestAgeYoungAdult = 0;
+            int youngestAgeYoungAdult = 0;
+            int numberPeoplePolledAdult = 0; // Number of People Polled
+            int totalAgeAdult = 0;
+            int oldestAgeAdult = 0;
+            int youngestAgeAdult = 0;
+            int numberPeoplePolledOlderCitizen = 0; // Number of People Polled
+            int totalAgeOlderCitizen = 0;
+            int oldestAgeOlderCitizen = 0;
+            int youngestAgeOlderCitizen = 0;
+            Console.Write("have you someone to poll? (Y/N) >");
+            bool isPersonPolled = Console.ReadLine().ToUpper() == "Y";
+
+            while (isPersonPolled)
+            {
+                numberPeoplePolled++;
+                Console.Write($"What is the age of person #{numberPeoplePolled} >");
+                int personAge = Convert.ToInt32(Console.ReadLine());
+                totalAge += personAge;
+                if (numberPeoplePolled == 1) // First person is the youngest and oldest
+                {
+                    oldestAge = personAge;
+                    youngestAge = personAge;
+                }
+                else
+                {
+                    if (personAge > oldestAge)
+                    {
+                        oldestAge = personAge;
+                    }
+                    if (personAge < youngestAge)
+                    {
+                        youngestAge = personAge;
+                    }
+                }
+
+                // A child
+                if (personAge < 13)
+                {
+                    totalAgeChild += personAge;
+                    numberPeoplePolledChild++;
+                    if (numberPeoplePolledChild == 1) // First person is the youngest and oldest
+                    {
+                        oldestAgeChild = personAge;
+                        youngestAgeChild = personAge;
+                    }
+                    else
+                    {
+                        if (personAge > oldestAgeChild)
+                        {
+                            oldestAgeChild = personAge;
+                        }
+                        if (personAge < youngestAgeChild)
+                        {
+                            youngestAgeChild = personAge;
+                        }
+                    }
+                }
+                else if (personAge <= 19) // Teenager
+                {
+                    totalAgeTeenager += personAge;
+                    numberPeoplePolledTeenager++;
+                    if (numberPeoplePolledTeenager == 1) // First person is the youngest and oldest
+                    {
+                        oldestAgeTeenager = personAge;
+                        youngestAgeTeenager = personAge;
+                    }
+                    else
+                    {
+                        if (personAge > oldestAgeTeenager)
+                        {
+                            oldestAgeTeenager = personAge;
+                        }
+                        if (personAge < youngestAgeTeenager)
+                        {
+                            youngestAgeTeenager = personAge;
+                        }
+                    }
+                }
+                else if (personAge <= 25)
+                {
+                    totalAgeYoungAdult += personAge;
+                    numberPeoplePolledYoungAdult++;
+                    if (numberPeoplePolledYoungAdult == 1) // First person is the youngest and oldest
+                    {
+                        oldestAgeYoungAdult = personAge;
+                        youngestAgeYoungAdult = personAge;
+                    }
+                    else
+                    {
+                        if (personAge > oldestAgeYoungAdult)
+                        {
+                            oldestAgeYoungAdult = personAge;
+                        }
+                        if (personAge < youngestAgeYoungAdult)
+                        {
+                            youngestAgeYoungAdult = personAge;
+                        }
+                    }
+                }
+                else if (personAge < 65)
+                {
+                    totalAgeAdult += personAge;
+                    numberPeoplePolledAdult++;
+                    if (numberPeoplePolledAdult == 1) // First person is the youngest and oldest
+                    {
+                        oldestAgeAdult = personAge;
+                        youngestAgeAdult = personAge;
+                    }
+                    else
+                    {
+                        if (personAge > oldestAgeAdult)
+                        {
+                            oldestAgeAdult = personAge;
+                        }
+                        if (personAge < youngestAgeAdult)
+                        {
+                            youngestAgeAdult = personAge;
+                        }
+                    }
+                }
+                else
+                {
+                    totalAgeOlderCitizen += personAge;
+                    numberPeoplePolledOlderCitizen++;
+                    if (numberPeoplePolledOlderCitizen == 1) // First person is the youngest and oldest
+                    {
+                        oldestAgeOlderCitizen = personAge;
+                        youngestAgeOlderCitizen = personAge;
+                    }
+                    else
+                    {
+                        if (personAge > oldestAgeOlderCitizen)
+                        {
+                            oldestAgeOlderCitizen = personAge;
+                        }
+                        if (personAge < youngestAgeOlderCitizen)
+                        {
+                            youngestAgeOlderCitizen = personAge;
+                        }
+                    }
+                }
+                Console.Write("have you someone to poll? (Y/N) >");
+                isPersonPolled = Console.ReadLine().ToUpper() == "Y";
+
+            }
+
+            Console.WriteLine($"The final total of age {totalAge}");
+            Console.WriteLine($"The total number of perople polled {numberPeoplePolled}");
+            Console.WriteLine($"The youngest person is aged {youngestAge}");
+            Console.WriteLine($"The oldest person is aged {oldestAge}");
+            float meanAge = totalAge / numberPeoplePolled;
+            Console.WriteLine($"The mean age is {meanAge}");
+            Console.WriteLine($"The final total of age {totalAgeChild}");
+            Console.WriteLine($"The total number of perople polled {numberPeoplePolledChild}");
+            Console.WriteLine($"The youngest person is aged {youngestAgeChild}");
+            Console.WriteLine($"The oldest person is aged {oldestAgeChild}");
+            float meanAgeChild = totalAgeChild / numberPeoplePolledChild;
+            Console.WriteLine($"The mean age is {meanAgeChild}");
+            Console.WriteLine($"The final total of age {totalAgeTeenager}");
+            Console.WriteLine($"The total number of perople polled {numberPeoplePolledTeenager}");
+            Console.WriteLine($"The youngest person is aged {youngestAgeTeenager}");
+            Console.WriteLine($"The oldest person is aged {oldestAgeTeenager}");
+            float meanAgeTeenager = totalAgeTeenager / numberPeoplePolledTeenager;
+            Console.WriteLine($"The mean age is {meanAgeTeenager}");
+            Console.WriteLine($"The final total of age {totalAgeYoungAdult}");
+            Console.WriteLine($"The total number of perople polled {numberPeoplePolledYoungAdult}");
+            Console.WriteLine($"The youngest person is aged {youngestAgeYoungAdult}");
+            Console.WriteLine($"The oldest person is aged {oldestAgeYoungAdult}");
+            float meanAgeYoungAdult = totalAgeYoungAdult / numberPeoplePolledYoungAdult;
+            Console.WriteLine($"The mean age is {meanAgeYoungAdult}");
+            Console.WriteLine($"The final total of age {totalAgeAdult}");
+            Console.WriteLine($"The total number of perople polled {numberPeoplePolledAdult}");
+            Console.WriteLine($"The youngest person is aged {youngestAgeAdult}");
+            Console.WriteLine($"The oldest person is aged {oldestAgeAdult}");
+            float meanAgeAdult = totalAgeAdult / numberPeoplePolledAdult;
+            Console.WriteLine($"The mean age is {meanAgeAdult}");
+            Console.WriteLine($"The final total of age {totalAgeOlderCitizen}");
+            Console.WriteLine($"The total number of perople polled {numberPeoplePolledOlderCitizen}");
+            Console.WriteLine($"The youngest person is aged {youngestAgeOlderCitizen}");
+            Console.WriteLine($"The oldest person is aged {oldestAgeOlderCitizen}");
+            float meanAgeOlderCitizen = totalAgeOlderCitizen / numberPeoplePolledOlderCitizen;
+            Console.WriteLine($"The mean age is {meanAgeOlderCitizen}");
+
+        }
+        static void DayThreeTeacherApproach2() {
+            int[] numberPolled = new int[6];
+            int[] totalAges = new int[6];
+            int[] youngestAges = new int[6];
+            int[] oldestAges = new int[6];
+            CategoryID categoryID;
+            string[] Categories = new string[] { "General", "Child", "Teenager", "Young Adult", "Adult", "Older Citizen" };
+            while (PersonPoll())
+            {
+                Console.Write($"What is the age of person >");
+                int personAge = Convert.ToInt32(Console.ReadLine());
+                UpdateCategoryValues(CategoryID.General, personAge, numberPolled, totalAges, youngestAges, oldestAges);
+                // Find the spceific category based on the age entered
+
+                if (personAge < 13)
+                {
+                    categoryID = CategoryID.Child;
+                }
+                else if (personAge <= 19) // Teenager
+                {
+                    categoryID = CategoryID.Teenager;
+                }
+                else if (personAge <= 25)
+                {
+                    categoryID = CategoryID.YoungAdult;
+                }
+                else if (personAge < 65)
+                {
+                    categoryID = CategoryID.Adult;
+                }
+                else
+                {
+                    categoryID = CategoryID.Older;
+                }
+                UpdateCategoryValues(categoryID, personAge, numberPolled, totalAges, youngestAges, oldestAges);
+            }
+            for (int i = 0; i < numberPolled.Length; i++)
+            {
+                DisplayResults(Categories[i], totalAges[i], numberPolled[i], youngestAges[i], oldestAges[i]);
+            }
+            static void DisplayResults(string category, int totalAge, int pollCount, int youngestAge, int oldestAge)
+            {
+                Console.WriteLine($"========== {category} ==============");
+                if (pollCount > 0)
+                {
+                    Console.WriteLine($"Number polled is {pollCount}");
+                    Console.WriteLine($"The youngest person is aged {youngestAge}");
+                    Console.WriteLine($"The oldest person is aged {oldestAge}");
+                    float meanAge = totalAge / pollCount;
+                    Console.WriteLine($"The mean age is {meanAge}");
+                }
+                Console.WriteLine("===============================}");
+            }
+            static bool PersonPoll()
+            {
+                Console.Write("have you someone to poll? (Y/N) >");
+                return Console.ReadLine().ToUpper() == "Y";
+
+            }
+            static void UpdateCategoryValues(CategoryID categoryID, int ageEntered, int[] numberPolled, int[] totalAges, int[] youngestAges, int[] oldestAges)
+            {
+                numberPolled[(int)categoryID]++;
+                totalAges[(int)(categoryID)] += ageEntered;
+                if (numberPolled[(int)categoryID] == 1)
+                {
+                    youngestAges[(int)categoryID] = ageEntered;
+                }
+                if (ageEntered > oldestAges[(int)categoryID])
+                {
+                    oldestAges[(int)(categoryID)] = ageEntered;
+                }
+                if ((ageEntered < youngestAges[(int)categoryID]))
+                {
+                    youngestAges[(int)categoryID] = ageEntered;
+                }
+            }
+
+        }
     }
     static void DayThree()
     {
@@ -323,8 +619,6 @@ internal class Program
             //Console.WriteLine($"The mean Age is {age} years and {meanAgeDays} days");
         }
     }
-
-
     static void DayTwo()
     {
         // Task1();
@@ -625,7 +919,6 @@ internal class Program
         }
         return number;
     }
-
     static void PrintStats(string category, params int[] myArray)
     {
         if (myArray.Length > 0 && myArray.Sum() != 0)
