@@ -36,7 +36,7 @@ internal class Program
     string[] catName = new string[] { "General", "Child", "Teenager", "YoungAdult", "Adult", "Older" };
 
     const int CLASSSIZE = 10;
-    static Stopwatch stopwatch = Stopwatch.StartNew(); //Diagnostic mesuares. Start measuring time
+    static Stopwatch stopwatch = Stopwatch.StartNew(); //Diagnostic measures. Start measuring time
     private static void Main(string[] args)
     {
         stopwatch.Start();
@@ -53,7 +53,7 @@ internal class Program
     }
     static void DayFive() // Improvements to day four code
     {
-        /* if the function returns true or false it should start with isPolledPeople?
+        /* if the function returns true or false, it should start with isPolledPeople?
         
         //categoryID = personAge switch
         //{
@@ -64,11 +64,11 @@ internal class Program
         //    _ => CategoryID.Older
         //};
 
-        Find our company's Code Convention
+        Find our company's Code Convention.
         Pick a style and stick to it
-        Do not be ambigious with naming
+        Do not be ambiguous with naming
 
-        Overloading when a method can be called with different arguments and scenarios.
+        Overloading is when a method can be called with different arguments and scenarios.
 
         string myName = "Tom";
         string firstLetter = myName[0]; ?? char explanation
@@ -94,6 +94,7 @@ internal class Program
         {
             int[] counter = new int[6];
             int testRuns = 10000000;
+            double persentRuns = 100 / testRuns; // added to test
 
             for (int i = 0; i < testRuns; i++)
             {
@@ -110,7 +111,8 @@ internal class Program
             Console.WriteLine($"Through {testRuns} runs:");
             for (int i = 0; i < counter.Length; i++)
             {
-                Console.WriteLine($"The probability chance for number {i + 1} is {(double)counter[i] / testRuns * 100:0.00}%");
+                //Console.WriteLine($"The probability chance for number {i + 1} is {(double)counter[i] / testRuns * 100:0.00}%");
+                Console.WriteLine($"The probability chance for number {i + 1} is {(double)counter[i] * persentRuns}%");
             }
             static int RollDice()
             {
