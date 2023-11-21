@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using static Program;
+using System.Threading.Tasks;
+using System.IO;
 
 internal class Program
 {
-    public enum CategoryID : int //enum approach
+    public enum CategoryID : int 
     {
         General,
         Child,
@@ -12,7 +13,7 @@ internal class Program
         YoungAdult,
         Adult,
         Older
-    }
+    } //enum approach
     const int IEGeneral = (int)CategoryID.General;
     const int IEChild = (int)CategoryID.Child;
     const int IETeenager = (int)CategoryID.Teenager;
@@ -40,19 +41,194 @@ internal class Program
     private static void Main(string[] args)
     {
         stopwatch.Start();
-        // Program.DayOne();
-        // Program.DayTwo();
-        // Program.DayThree();
-        // Program.DayFour();
-        Program.DayFive();
+     // Program.DayOne();
+     // Program.DayTwo();
+     // Program.DayThree();
+     // Program.DayFour();
+     // Program.DayFive();
+        Program.DaySix();
 
         stopwatch.Stop();
         Console.WriteLine($"\nPress any key to exit...\tProcessing time: {stopwatch.ElapsedMilliseconds} ms");
         Console.ReadKey();
         Environment.Exit(0);
     }
-    static void DayFive() // Improvements to day four code
+    static void DaySix()
     {
+        //CreateTextFile ();
+        //MyStreamWriter();
+        MyStreamWriterPrompt();
+
+        static void MyStreamWriterPrompt()
+        {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
+            string desktopFilePath = desktopPath + @"simple.txt";
+            string helloText = "Hello World!";
+
+            Console.Write("Do you want to (R)ead or (W)rite the file? (R/W) > ");
+            string? answer = Console.ReadLine().ToLower();
+
+            if (answer == "r")
+            {
+                if (ReadMyFile(desktopFilePath))
+                {
+                    Console.WriteLine($"We successfully read the file: {desktopFilePath}");
+                }
+                else
+                {
+                    Console.WriteLine($"By mystery mistake we couldn't not read the file");
+                }
+            }
+            else if (answer == "w")
+            {
+                if (WriteMyFile(desktopFilePath, helloText))
+                {
+                    Console.WriteLine($"We successfully added text to the file: {desktopFilePath}");
+                }
+                else
+                {
+                    Console.WriteLine($"By mystery mistake we couldn't write the file");
+                }
+            }
+            static bool ReadMyFile(string path)
+            {
+                Console.Clear();
+                string? directoryPath = Path.GetDirectoryName(path);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                    Console.WriteLine($"Directory doesnt' exist, we created {directoryPath}");
+                }
+                if (!File.Exists(path))
+                {
+                    File.Create(path);
+                    Console.WriteLine($"File doesnt' exist, we created {path}");
+                }
+                try
+                {
+                    using (StreamReader fileReader = new StreamReader(path))
+                    {
+                        Console.WriteLine("Do you want to read the first (3) lines or (F)ull file? (3/F)");
+                        string answerReader = Console.ReadLine().ToLower();
+                        if (answerReader == "3")
+                        {
+                            string str = "";
+                            Console.WriteLine($"File content:\n");
+                            for (int i = 1; i < 4; i++)
+                            { 
+                                str += fileReader.ReadLine() + "\n";
+                            }
+                            Console.WriteLine(str);
+                        }
+                        else if (answerReader == "f")
+                        {
+                            Console.WriteLine($"File content:\n{fileReader.ReadToEnd()}");
+                        }
+                        fileReader.Close();
+                        return true; 
+                    }
+                }
+                catch (DirectoryNotFoundException ed)
+                {
+                    Console.WriteLine($"Error: '{ed.Message}'\nFile doesn't exist");
+                }
+                catch (FileNotFoundException ef)
+                {
+                    Console.WriteLine($"Error: '{ef.Message}'\nFile doesn't exist");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return false;
+            }
+            static bool WriteMyFile(string path, string text, bool add=true)
+            {
+                string? directoryPath = Path.GetDirectoryName(path);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                    Console.WriteLine($"Directory doesnt' exist, we created {directoryPath}");
+                }
+                try
+                {
+                    using (StreamWriter fileWriter = new StreamWriter(path,add))
+                    {
+                        fileWriter.Write(text, add);
+                        fileWriter.Close();
+                        return true;
+                    }
+                }
+                catch (DirectoryNotFoundException ed)
+                {
+                    Console.WriteLine($"Error: '{ed.Message}'\nFile doesn't exist");
+                }
+                catch (FileNotFoundException ef)
+                {
+                    Console.WriteLine($"Error: '{ef.Message}'\nFile doesn't exist");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return false;
+            }
+        } // MyStreamWriterPrompt()
+        static void MyStreamWriter()
+        {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)+"\\";
+            string desktopFilePath = desktopPath + @"simple.txt";
+            string helloText = "Hello World!";
+            
+            Console.WriteLine(desktopFilePath);
+
+            // creating directory if it doesn't exist
+            string? directoryPath = Path.GetDirectoryName(desktopFilePath);
+            if (false) //(!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+                Console.WriteLine($"Directory doesnt' exist, we created {directoryPath}");
+            }
+            try
+            {
+                using (StreamWriter fileWriter = new StreamWriter(desktopFilePath))
+                { 
+                    fileWriter.WriteLine(helloText, true);
+                    fileWriter.Close();
+                }
+            }
+            catch (DirectoryNotFoundException ed)
+            { Console.WriteLine($"Error: '{ed.Message}'\nFile doesn't exist"); 
+            }
+            catch (FileNotFoundException ef)
+            {
+                Console.WriteLine($"Error: '{ef.Message}'\nFile doesn't exist");
+            }
+            catch (Exception e)
+            {  
+                Console.WriteLine(e.Message);
+            }
+
+
+            //fileWriter.Close(); //unnessesarry but could be understandable
+
+        } // MyStreamWriter()
+        static void CreateTextFile()
+        {
+            int lines = 10;
+            string helloText = "Hello World!";
+            string fileText = "";
+
+            for (int i = 1; i <= lines; i++)
+            {
+                fileText += "Line #"+i+": "+ helloText + "\n";
+            }
+            Console.WriteLine(fileText);
+            File.WriteAllText("helloworld10.txt", fileText);
+        } // CreateTextFile()
+    } // DaySix()
+    static void DayFive()
+    { // Improvements to day four code
         /* if the function returns true or false, it should start with isPolledPeople?
         
         //categoryID = personAge switch
@@ -88,8 +264,34 @@ internal class Program
         //DayFiveTeacherApproach2();
         //RollDiceApproach1(); // Task RollDice
         //RollDiceApproach2(); // Task RollDice
-        RollDiceValidation();
+        //RollDiceValidation();
+        RollDiceValidationThreads();
 
+        static void RollDiceValidationThreads()
+        {
+            // Define the number of iterations and an array to hold counts for each possible value.
+            long totalIterations = 100000000; // 100m is safe can be finished for 8.4s, 1b takes 82,5 seconds
+            int[] counts = new int[6];
+
+            // Run the loop in parallel.
+            Parallel.For(0, totalIterations, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, _ =>
+            {
+                Random rnd = new Random(); // Local Random instance to avoid thread contention.
+                int index = rnd.Next(1, 7); // Get a random value between 1 and 6(5).
+                Interlocked.Increment(ref counts[index - 1]); // Safely increment the count for this index.
+            });
+
+            // Calculate percentages.
+            double[] percentages = new double[6];
+            for (int i = 0; i < counts.Length; i++)
+            {
+                percentages[i] = Math.Round((counts[i] / (double)totalIterations) * 100, 2);
+            }
+            for (int i = 0 ; i < percentages.Length ; i++)
+            {
+                Console.WriteLine($"The probability chance for number {i + 1} is {percentages[i]}%");
+            }
+        }
         static void RollDiceValidation()
         {
             int[] counter = new int[6];
@@ -100,19 +302,19 @@ internal class Program
             {
                 switch (RollDice())
                 {
-                    case 1:counter[0]++;break;
-                    case 2:counter[1]++;break;
-                    case 3:counter[2]++;break;
-                    case 4:counter[3]++;break;
-                    case 5:counter[4]++;break;
-                    case 6:counter[5]++;break;
+                    case 1: counter[0]++; break;
+                    case 2: counter[1]++; break;
+                    case 3: counter[2]++; break;
+                    case 4: counter[3]++; break;
+                    case 5: counter[4]++; break;
+                    case 6: counter[5]++; break;
                 }
             }
             Console.WriteLine($"Through {testRuns} runs:");
             for (int i = 0; i < counter.Length; i++)
             {
-                //Console.WriteLine($"The probability chance for number {i + 1} is {(double)counter[i] / testRuns * 100:0.00}%");
-                Console.WriteLine($"The probability chance for number {i + 1} is {(double)counter[i] * persentRuns}%");
+                Console.WriteLine($"The probability chance for number {i + 1} is {(double)counter[i] / testRuns * 100:0.00}%");
+                //Console.WriteLine($"The probability chance for number {i + 1} is {(double)counter[i] * persentRuns}%");
             }
             static int RollDice()
             {
@@ -155,7 +357,6 @@ internal class Program
             }
             while (isRollDice);
         }
-
         static void DayFiveTeacherApproach2()
         {
             int[] numberPolled = new int[6];
@@ -171,15 +372,16 @@ internal class Program
                 // Find the spceific category based on the age entered and update values
                 UpdateCategoryValues(AgeCategory(personAge), personAge, numberPolled, totalAges, youngestAges, oldestAges);
             }
-            
+
             static CategoryID AgeCategory(int age)
             {
-                switch (age)  {
-                    case < 13:  return CategoryID.Child;
+                switch (age)
+                {
+                    case < 13: return CategoryID.Child;
                     case <= 19: return CategoryID.Teenager;
                     case <= 25: return CategoryID.YoungAdult;
-                    case < 65:  return CategoryID.Adult;
-                    default:    return CategoryID.Older;
+                    case < 65: return CategoryID.Adult;
+                    default: return CategoryID.Older;
                 }
             } // AgeCategory();
 
@@ -187,19 +389,19 @@ internal class Program
 
             static void DisplayResults(string[] category, int[] totalAge, int[] pollCount, int[] youngestAge, int[] oldestAge)
             {
-            for (int i = 0; i < pollCount.Length; i++)
-            {
-                Console.WriteLine($"========== {category[i]} ==============");
-                if (pollCount[i] > 0)
+                for (int i = 0; i < pollCount.Length; i++)
                 {
-                    Console.WriteLine($"Number polled is {pollCount[i]}");
-                    Console.WriteLine($"The youngest person is aged {youngestAge[i]}");
-                    Console.WriteLine($"The oldest person is aged {oldestAge[i]}");
-                    float meanAge = (float)totalAge[i] / pollCount[i];
-                    Console.WriteLine($"The mean age is {meanAge}");
+                    Console.WriteLine($"========== {category[i]} ==============");
+                    if (pollCount[i] > 0)
+                    {
+                        Console.WriteLine($"Number polled is {pollCount[i]}");
+                        Console.WriteLine($"The youngest person is aged {youngestAge[i]}");
+                        Console.WriteLine($"The oldest person is aged {oldestAge[i]}");
+                        float meanAge = (float)totalAge[i] / pollCount[i];
+                        Console.WriteLine($"The mean age is {meanAge}");
+                    }
+                    Console.WriteLine("===============================}");
                 }
-                Console.WriteLine("===============================}");
-            }
             } //DisplayResults
             static bool PersonPoll()
             {
@@ -209,7 +411,7 @@ internal class Program
             } //PersonPoll
             static void UpdateCategoryValues(CategoryID categoryID, int ageEntered, int[] numberPolled, int[] totalAges, int[] youngestAges, int[] oldestAges)
             {
-            
+
                 numberPolled[(int)categoryID]++;
                 totalAges[(int)(categoryID)] += ageEntered;
 
@@ -227,7 +429,7 @@ internal class Program
                 }
             } // UpdateCategoryValues()
         } // DayThreeTeacherApproach2()
-    }//   DayFive()
+    }// DayFive()
     static void DayFour()
     {
         // DayFourApproach3();
@@ -361,8 +563,6 @@ internal class Program
             int personAgeOlder = 0;
             int oldestAgeOlder = 0;
             int youngestAgeOlder = 0;
-
-
 
             while (anyOtherPeople)
             {
@@ -635,7 +835,8 @@ internal class Program
             Console.WriteLine($"The mean age is {meanAgeOlderCitizen}");
 
         }
-        static void DayThreeTeacherApproach2() {
+        static void DayThreeTeacherApproach2()
+        {
             int[] numberPolled = new int[6];
             int[] totalAges = new int[6];
             int[] youngestAges = new int[6];
@@ -780,7 +981,7 @@ internal class Program
             PrintStats("Older Citizen", catOlderCitizen);
             //Console.WriteLine($"The mean Age is {age} years and {meanAgeDays} days");
         }
-    }
+    } // DayThree()
     static void DayTwo()
     {
         // Task1();
@@ -948,7 +1149,7 @@ internal class Program
             Console.WriteLine($"\nAverage grade of the students is {averageGrade}, Highest mark is {highestGrade} for student {studentGrades.IndexOf(studentGrades.Max()) + 1}");
             Console.WriteLine($"The average mode grades are {modeOutput10}");
         }
-    }
+    } // DayTwo()
     static void DayOne()
     {
         Console.WriteLine("1. Hello, World!\nGoodbye, World! same lane with \\n");
@@ -1059,8 +1260,8 @@ internal class Program
         // int divisionAnswer3 = readFirstNumber17 / (float)readSecondNumber17;
         decimal divisionAnswerDecimal = readFirstNumber17 / (decimal)readSecondNumber17;
         Console.WriteLine($"The division for different types are:\nDouble: {divisionAnswerDouble}.\nDecimal: {divisionAnswerDecimal}.\nFloat: {divisionAnswerFloat}.");
-    }
-    static int ReAskNumber(string messageToUser)
+    } // DayOne()
+    static int  ReAskNumber(string messageToUser)
     {
         int number = 0;
         bool numberSuccess = false;
@@ -1080,7 +1281,7 @@ internal class Program
             }
         }
         return number;
-    }
+    } // ReAskNumber()
     static void PrintStats(string category, params int[] myArray)
     {
         if (myArray.Length > 0 && myArray.Sum() != 0)
@@ -1104,5 +1305,5 @@ internal class Program
             Console.WriteLine($"The Modeular mean of Age is {meanAgeYearsM} years and {meanAgeDaysM} days");
             Console.WriteLine();
         }
-    }
+    } // PrintStats()
 } // class Program
