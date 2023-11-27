@@ -2,6 +2,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.IO;
+using System.ComponentModel;
+using System.Data.Common;
+using System.Text;
+using System.Linq;
+
 
 internal class Program
 {
@@ -46,13 +51,144 @@ internal class Program
      // Program.DayThree();
      // Program.DayFour();
      // Program.DayFive();
-        Program.DaySix();
+     // Program.DaySix();
+        Program.DaySeven();
 
         stopwatch.Stop();
         Console.WriteLine($"\nPress any key to exit...\tProcessing time: {stopwatch.ElapsedMilliseconds} ms");
         Console.ReadKey();
         Environment.Exit(0);
     }
+
+    static void DaySeven()
+    {
+        // CSV
+        // 16bits = 2 bytes to store one character
+        //ReadViaStreamReaderMethod();
+        ReadViaFileMethod();
+        
+        
+        static void ReadViaFileMethod()
+        {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
+            string csvFilePath = desktopPath + @"SampleCSV.csv";
+
+            string[] importedCSV = File.ReadAllLines(csvFilePath);
+            int totalLines = importedCSV.Length;
+
+            /* var table = new Table();
+            table.LoadFromCsvArray(importedCSV);
+            Console.WriteLine(table.ToString()); 
+            
+            for (int i = 0;i < importedCSV.Length; i++) {
+            Console.WriteLine($"Line {i+1}: {importedCSV[i]}");
+            }*/
+            int linecount = 0;
+            int totalAge = 0;
+            
+            int skipNumberLines = 0;
+            bool skipHeaders = true;
+            if (skipHeaders) {
+                skipNumberLines = 1;
+            }
+            // never use CristianName or SurName, always use FirstName and LastName.
+            string[] studentNames = new string[totalLines];
+            int[] ages = new int[totalLines];
+
+            foreach (string line in importedCSV.Skip(skipNumberLines))
+            {
+                Console.WriteLine($"Line #{linecount + 1}: {line}");
+                string[] dataFields = line.Split(",");
+                //Console.WriteLine(dataFields.Length);
+                if (skipHeaders)
+                {
+                    int age = Convert.ToInt32(dataFields[2]);
+                    totalAge += age;
+                    studentNames[linecount] = dataFields[0] + " " + dataFields[1];
+                    ages[linecount] = age;
+                }
+                linecount++;
+
+
+            }
+
+            for (int i=0;  i < totalLines; i++)
+            {
+                Console.WriteLine($"Student #{i+1} '{studentNames[i]}' aged '{ages[i]}'");
+            }
+
+            //double averageAge = Math.Round((double)totalAge / linecount ,2);
+            //string averageAge = String.Format("{0:F2}", (double)totalAge / linecount); // wromg return
+
+            //Console.WriteLine($"Total age: '{totalAge}', Mean age: {averageAge}");
+
+            Console.WriteLine($"There are {ages.Length} students");
+            Console.WriteLine($"The youngest student is {ages.Min()}");
+            Console.WriteLine($"The oldest student is {ages.Max()}");
+            Console.WriteLine($"The average age of all students {ages.Average():F2}");
+            Console.WriteLine($"The average age of all students {Math.Round(ages.Average(),2)}");
+
+                
+        }
+
+
+
+
+        static void ReadViaStreamReaderMethod() { 
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
+        string csvFilePath = desktopPath + @"SampleCSV.csv";
+        int lineCount = File.ReadLines(csvFilePath).Count();
+        string[] importedCSV = new string[lineCount];
+        importedCSV = ImporterSR(csvFilePath);
+        string[] outputToTable = new string[importedCSV.Length];
+        string outputToString = "";
+
+        for (int i = 0; i < importedCSV.Length; i++)
+        {
+            string tmp = importedCSV[i].Replace(",", "\t");
+            outputToTable[i] = tmp;
+            outputToString += tmp + "\n";
+        }
+
+        Console.WriteLine($"The header line is: '{outputToTable[0]}'");
+        Console.WriteLine($"Tenth data line is: '{outputToTable[10]}'");
+        Console.WriteLine($"Number of data lines: '{outputToTable.Length}'");
+        //Console.WriteLine($"\nWhole table here:\n{outputToString}");
+
+        var table = new Table();
+        table.LoadFromCsvArray(importedCSV);
+        Console.WriteLine(table.ToString());
+
+        static string[] ImporterSR(string path)
+        {
+            StreamReader sr;
+            if (File.Exists(path))
+            {
+                var lineCount = File.ReadLines(path).Count();
+                string[] array = new string[lineCount];
+
+                sr = new StreamReader(path);
+                int counter = 0;
+                while (!sr.EndOfStream)
+                {
+                    try
+                    {
+                        array[counter] = sr.ReadLine();
+                        counter++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+                sr.Close();
+                return array;
+            }
+            else
+                return null;
+        } // Importer();
+        } //ReadViaStreamReaderMethod()
+    } // DaySeven()
     static void DaySix()
     {
         //CreateTextFile ();
@@ -1000,7 +1136,7 @@ internal class Program
             Console.WriteLine($"Max of a 16bit sined integer:\nMax value is {Int16.MaxValue}\nMin value is {Int16.MinValue}");
             // ASCHII Table - https://upload.wikimedia.org/wikipedia/commons/d/dd/ASCII-Table.svg
             // Extended ASCHII Table - https://sqljunkieshare.files.wordpress.com/2012/01/extended-ascii-table.jpg
-            // 2^(32) = 4,284B
+            // 2^(32) = 4,284B 16bits = 2 bytes to store one character
             Console.WriteLine($"Int32=2^(32) = 4,284B. Precise number is {Math.Pow(2, 32)}");
             Console.WriteLine($"{(long)Math.Pow(2, 128)}");
             Console.Clear();
@@ -1306,4 +1442,244 @@ internal class Program
             Console.WriteLine();
         }
     } // PrintStats()
+    public class Table
+    {
+        private const string TopLeftJoint = "┌";
+        private const string TopRightJoint = "┐";
+        private const string BottomLeftJoint = "└";
+        private const string BottomRightJoint = "┘";
+        private const string TopJoint = "┬";
+        private const string BottomJoint = "┴";
+        private const string LeftJoint = "├";
+        private const string MiddleJoint = "┼";
+        private const string RightJoint = "┤";
+        private const char HorizontalLine = '─';
+        private const string VerticalLine = "│";
+
+        private string[] _headers;
+        private List<string[]> _rows = new List<string[]>();
+
+        public int Padding { get; set; } = 1;
+        public bool HeaderTextAlignRight { get; set; }
+        public bool RowTextAlignRight { get; set; }
+
+        public void SetHeaders(params string[] headers)
+        {
+            _headers = headers;
+        }
+        public void AddRow(params string[] row)
+        {
+            _rows.Add(row);
+        }
+        public void ClearRows()
+        {
+            _rows.Clear();
+        }
+        private int[] GetMaxCellWidths(List<string[]> table)
+        {
+            var maximumColumns = 0;
+            foreach (var row in table)
+            {
+                if (row.Length > maximumColumns)
+                    maximumColumns = row.Length;
+            }
+
+            var maximumCellWidths = new int[maximumColumns];
+            for (int i = 0; i < maximumCellWidths.Count(); i++)
+                maximumCellWidths[i] = 0;
+
+            var paddingCount = 0;
+            if (Padding > 0)
+            {
+                //Padding is left and right
+                paddingCount = Padding * 2;
+            }
+
+            foreach (var row in table)
+            {
+                for (int i = 0; i < row.Length; i++)
+                {
+                    var maxWidth = row[i].Length + paddingCount;
+
+                    if (maxWidth > maximumCellWidths[i])
+                        maximumCellWidths[i] = maxWidth;
+                }
+            }
+
+            return maximumCellWidths;
+        }
+        private StringBuilder CreateTopLine(int[] maximumCellWidths, int rowColumnCount, StringBuilder formattedTable)
+        {
+            for (int i = 0; i < rowColumnCount; i++)
+            {
+                if (i == 0 && i == rowColumnCount - 1)
+                    formattedTable.AppendLine(string.Format("{0}{1}{2}", TopLeftJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine), TopRightJoint));
+                else if (i == 0)
+                    formattedTable.Append(string.Format("{0}{1}", TopLeftJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine)));
+                else if (i == rowColumnCount - 1)
+                    formattedTable.AppendLine(string.Format("{0}{1}{2}", TopJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine), TopRightJoint));
+                else
+                    formattedTable.Append(string.Format("{0}{1}", TopJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine)));
+            }
+
+            return formattedTable;
+        }
+        private StringBuilder CreateBottomLine(int[] maximumCellWidths, int rowColumnCount, StringBuilder formattedTable)
+        {
+            for (int i = 0; i < rowColumnCount; i++)
+            {
+                if (i == 0 && i == rowColumnCount - 1)
+                    formattedTable.AppendLine(string.Format("{0}{1}{2}", BottomLeftJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine), BottomRightJoint));
+                else if (i == 0)
+                    formattedTable.Append(string.Format("{0}{1}", BottomLeftJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine)));
+                else if (i == rowColumnCount - 1)
+                    formattedTable.AppendLine(string.Format("{0}{1}{2}", BottomJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine), BottomRightJoint));
+                else
+                    formattedTable.Append(string.Format("{0}{1}", BottomJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine)));
+            }
+
+            return formattedTable;
+        }
+        private StringBuilder CreateValueLine(int[] maximumCellWidths, string[] row, bool alignRight, StringBuilder formattedTable)
+        {
+            int cellIndex = 0;
+            int lastCellIndex = row.Length - 1;
+
+            var paddingString = string.Empty;
+            if (Padding > 0)
+                paddingString = string.Concat(Enumerable.Repeat(' ', Padding));
+
+            foreach (var column in row)
+            {
+                var restWidth = maximumCellWidths[cellIndex];
+                if (Padding > 0)
+                    restWidth -= Padding * 2;
+
+                var cellValue = alignRight ? column.PadLeft(restWidth, ' ') : column.PadRight(restWidth, ' ');
+
+                if (cellIndex == 0 && cellIndex == lastCellIndex)
+                    formattedTable.AppendLine(string.Format("{0}{1}{2}{3}{4}", VerticalLine, paddingString, cellValue, paddingString, VerticalLine));
+                else if (cellIndex == 0)
+                    formattedTable.Append(string.Format("{0}{1}{2}{3}", VerticalLine, paddingString, cellValue, paddingString));
+                else if (cellIndex == lastCellIndex)
+                    formattedTable.AppendLine(string.Format("{0}{1}{2}{3}{4}", VerticalLine, paddingString, cellValue, paddingString, VerticalLine));
+                else
+                    formattedTable.Append(string.Format("{0}{1}{2}{3}", VerticalLine, paddingString, cellValue, paddingString));
+
+                cellIndex++;
+            }
+
+            return formattedTable;
+        }
+        private StringBuilder CreateSeperatorLine(int[] maximumCellWidths, int previousRowColumnCount, int rowColumnCount, StringBuilder formattedTable)
+        {
+            var maximumCells = Math.Max(previousRowColumnCount, rowColumnCount);
+
+            for (int i = 0; i < maximumCells; i++)
+            {
+                if (i == 0 && i == maximumCells - 1)
+                {
+                    formattedTable.AppendLine(string.Format("{0}{1}{2}", LeftJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine), RightJoint));
+                }
+                else if (i == 0)
+                {
+                    formattedTable.Append(string.Format("{0}{1}", LeftJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine)));
+                }
+                else if (i == maximumCells - 1)
+                {
+                    if (i > previousRowColumnCount)
+                        formattedTable.AppendLine(string.Format("{0}{1}{2}", TopJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine), TopRightJoint));
+                    else if (i > rowColumnCount)
+                        formattedTable.AppendLine(string.Format("{0}{1}{2}", BottomJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine), BottomRightJoint));
+                    else if (i > previousRowColumnCount - 1)
+                        formattedTable.AppendLine(string.Format("{0}{1}{2}", MiddleJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine), TopRightJoint));
+                    else if (i > rowColumnCount - 1)
+                        formattedTable.AppendLine(string.Format("{0}{1}{2}", MiddleJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine), BottomRightJoint));
+                    else
+                        formattedTable.AppendLine(string.Format("{0}{1}{2}", MiddleJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine), RightJoint));
+                }
+                else
+                {
+                    if (i > previousRowColumnCount)
+                        formattedTable.Append(string.Format("{0}{1}", TopJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine)));
+                    else if (i > rowColumnCount)
+                        formattedTable.Append(string.Format("{0}{1}", BottomJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine)));
+                    else
+                        formattedTable.Append(string.Format("{0}{1}", MiddleJoint, string.Empty.PadLeft(maximumCellWidths[i], HorizontalLine)));
+                }
+            }
+
+            return formattedTable;
+        }
+        public void LoadFromCsvArray(string[] csvArray)
+        {
+            if (csvArray == null || csvArray.Length == 0)
+                throw new ArgumentException("CSV array is empty or null.");
+
+            // Assume first row is the header
+            var headers = csvArray[0].Split(',');
+            SetHeaders(headers);
+
+            // Iterate over the remaining rows
+            for (int i = 1; i < csvArray.Length; i++)
+            {
+                var row = csvArray[i].Split(',');
+                AddRow(row);
+            }
+        }
+        public override string ToString()
+        {
+            var table = new List<string[]>();
+
+            var firstRowIsHeader = false;
+            if (_headers?.Any() == true)
+            {
+                table.Add(_headers);
+                firstRowIsHeader = true;
+            }
+
+            if (_rows?.Any() == true)
+                table.AddRange(_rows);
+
+            if (!table.Any())
+                return string.Empty;
+
+            var formattedTable = new StringBuilder();
+
+            var previousRow = table.FirstOrDefault();
+            var nextRow = table.FirstOrDefault();
+
+            int[] maximumCellWidths = GetMaxCellWidths(table);
+
+            formattedTable = CreateTopLine(maximumCellWidths, nextRow.Count(), formattedTable);
+
+            int rowIndex = 0;
+            int lastRowIndex = table.Count - 1;
+
+            for (int i = 0; i < table.Count; i++)
+            {
+                var row = table[i];
+
+                var align = RowTextAlignRight;
+                if (i == 0 && firstRowIsHeader)
+                    align = HeaderTextAlignRight;
+
+                formattedTable = CreateValueLine(maximumCellWidths, row, align, formattedTable);
+
+                previousRow = row;
+
+                if (rowIndex != lastRowIndex)
+                {
+                    nextRow = table[rowIndex + 1];
+                    formattedTable = CreateSeperatorLine(maximumCellWidths, previousRow.Count(), nextRow.Count(), formattedTable);
+                }
+
+                rowIndex++;
+            }
+
+            formattedTable = CreateBottomLine(maximumCellWidths, previousRow.Count(), formattedTable);
+
+            return formattedTable.ToString();
+        }
+    } // Class Table
 } // class Program
