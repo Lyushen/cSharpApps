@@ -1,0 +1,15 @@
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\bin\Debug\net8.0\cSharpApps.exe
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\bin\Debug\net8.0\cSharpApps.deps.json
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\bin\Debug\net8.0\cSharpApps.runtimeconfig.json
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\bin\Debug\net8.0\cSharpApps.dll
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\bin\Debug\net8.0\cSharpApps.pdb
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\obj\Debug\net8.0\cSharpApps.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\obj\Debug\net8.0\cSharpApps.AssemblyInfoInputs.cache
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\obj\Debug\net8.0\cSharpApps.AssemblyInfo.cs
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\obj\Debug\net8.0\cSharpApps.csproj.CoreCompileInputs.cache
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\obj\Debug\net8.0\cSharpApps.sourcelink.json
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\obj\Debug\net8.0\cSharpApps.dll
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\obj\Debug\net8.0\refint\cSharpApps.dll
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\obj\Debug\net8.0\cSharpApps.pdb
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\obj\Debug\net8.0\cSharpApps.genruntimeconfig.cache
+C:\Users\Alex Nikitin\Source\Repos\Lyushen\cSharpApps\cSharpApps\obj\Debug\net8.0\ref\cSharpApps.dll
