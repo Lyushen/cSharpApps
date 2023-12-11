@@ -1,0 +1,86 @@
+Name	Division	Week 1	Week 2	Week 3	Week 4	Week 5
+Reece Sweeney	Sales	3	7	8	7	8
+Harper Huber	Management	8	9	7	5	2
+Richard Hinton	Research	10	4	7	6	5
+Andy Peters	Production	8	6	9	2	4
+Dangelo Jones	Research	3	4	9	7	7
+Walker Pierce	Management	7	4	5	4	10
+Makenna Krause	Sales	8	9	6	5	9
+Abril Garza	Management	4	9	7	9	8
+Jayce Wilson	Research	6	4	4	4	4
+Carlos Ayala	Management	5	7	7	5	10
+Jorden Wilcox	Sales	7	8	9	3	5
+Tara Baxter	Research	6	5	2	7	8
+Ramon Craig	Production	3	9	5	3	2
+Walker Raymond	Research	9	4	2	4	4
+Allan Whitney	Sales	10	2	8	3	4
+Teresa Herrera	Sales	2	8	3	4	6
+Santino Atkinson	Management	3	7	7	6	4
+Mary Horn	Research	2	3	10	10	4
+Annabel Scott	Sales	4	5	10	10	6
+Kaeden Baker	Management	5	5	10	9	6
+Griffin Aguilar	Production	5	9	3	6	9
+Layne Phillips	Production	4	9	5	3	6
+Lincoln Compton	Management	10	6	5	3	6
+Joaquin Curry	Production	10	4	6	10	8
+Osvaldo Walter	Management	9	2	2	6	10
+Ronald Mays	Research	9	3	4	4	8
+Jaylyn Nunez	Production	7	7	5	2	9
+Nicole Underwood	Management	4	10	3	7	4
+Jaylah Parker	Sales	7	6	7	9	9
+Pierce Gregory	Production	2	4	5	5	5
+Total for Week 1: 180
+Total for Week 2: 179
+Total for Week 3: 180
+Total for Week 4: 168
+Total for Week 5: 190
+Week 1:
+	Sales: 41
+	Management: 55
+	Research: 45
+	Production: 39
+Week 2:
+	Sales: 45
+	Management: 59
+	Research: 27
+	Production: 48
+Week 3:
+	Sales: 51
+	Management: 53
+	Research: 38
+	Production: 38
+Week 4:
+	Sales: 41
+	Management: 54
+	Research: 42
+	Production: 31
+Week 5:
+	Sales: 47
+	Management: 60
+	Research: 40
+	Production: 43
+Week 1:
+	Department Sales: Allan Whitney with 10 tickets
+	Department Management: Lincoln Compton with 10 tickets
+	Department Research: Richard Hinton with 10 tickets
+	Department Production: Joaquin Curry with 10 tickets
+Week 2:
+	Department Sales: Makenna Krause with 9 tickets
+	Department Management: Nicole Underwood with 10 tickets
+	Department Research: Tara Baxter with 5 tickets
+	Department Production: Ramon Craig with 9 tickets
+Week 3:
+	Department Sales: Annabel Scott with 10 tickets
+	Department Management: Kaeden Baker with 10 tickets
+	Department Research: Mary Horn with 10 tickets
+	Department Production: Andy Peters with 9 tickets
+Week 4:
+	Department Sales: Annabel Scott with 10 tickets
+	Department Management: Abril Garza with 9 tickets
+	Department Research: Mary Horn with 10 tickets
+	Department Production: Joaquin Curry with 10 tickets
+Week 5:
+	Department Sales: Makenna Krause with 9 tickets
+	Department Management: Walker Pierce with 10 tickets
+	Department Research: Tara Baxter with 8 tickets
+	Department Production: Griffin Aguilar with 9 tickets
