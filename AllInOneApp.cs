@@ -10,6 +10,122 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System;
 
 
+public class SoccerStats
+{
+    /*    
+    Analyse the provided CSV file and
+    * Calculate the total number of tries scored for each country
+    * Display the top scorer from each country
+    * What is the average monthly score for each country
+    * All results are outputted to the screen and a text file
+    * Produce Flow Chart(s) and Pseudocode for your solution's logic
+    * Code your solution using C#
+    * Justify your design approach
+    Bonus Tasks
+    * A try is worth 5 points. What is the average number of points scored by each country for each month? Display to the nearest point.
+    * Rank the countries, highest scoring to lowest for each month of the tournament - showing total tries and points
+    * Rank the countries highest to lowest for the overall tournament - show total tries and points */
+
+    //private readonly Dictionary<string, List<PlayerInfo>> playerDataByRegion = new Dictionary<string, List<PlayerInfo>>();
+    private readonly string[] countries = { "France", "Italy", "England", "Ireland", "Wales", "Scotland" };
+    private readonly string csvFilePath;
+    private readonly string outputFile;
+
+
+    private void ReadFile()
+    {
+        try
+        {
+            
+        }
+        catch (Exception ex) {
+            Console.Writeline(); }
+    }
+
+}
+
+
+public class PlayerAttendanceAnalyzer
+{
+    private readonly Dictionary<string, List<PlayerInfo>> playerDataByRegion = new Dictionary<string, List<PlayerInfo>>();
+    private readonly string[] regions = { "East", "West", "North", "South" };
+    private readonly string csvFilePath;
+    private readonly string outputFile;
+
+    public PlayerAttendanceAnalyzer(string csvFilePath, string outputFile)
+    {
+        this.csvFilePath = csvFilePath;
+        this.outputFile = outputFile;
+        foreach (var region in regions)
+        {
+            playerDataByRegion[region] = new List<PlayerInfo>();
+        }
+    }
+
+    public void AnalyzeAttendance()
+    {
+        LoadData();
+        WriteStatistics();
+    }
+
+    private void LoadData()
+    {
+        using (var reader = new StreamReader(csvFilePath))
+        {
+            reader.ReadLine(); // Skip header
+
+            while (!reader.EndOfStream)
+            {
+                var line = reader.ReadLine();
+                var data = line.Split(',');
+                if (data.Length < 7) continue; // Skip invalid lines
+
+                var playerInfo = new PlayerInfo
+                {
+                    Name = data[0],
+                    Region = data[1],
+                    TotalAttendance = data.Skip(2).Take(5)
+                                          .Select(s => int.TryParse(s, out int value) ? value : 0)
+                                          .Sum()
+                };
+
+                if (playerDataByRegion.ContainsKey(playerInfo.Region))
+                {
+                    playerDataByRegion[playerInfo.Region].Add(playerInfo);
+                }
+            }
+        }
+    }
+
+    private void WriteStatistics()
+    {
+        using (var writer = new StreamWriter(outputFile))
+        {
+            foreach (var region in regions)
+            {
+                if (!playerDataByRegion.ContainsKey(region) || !playerDataByRegion[region].Any()) continue;
+
+                var regionalPlayers = playerDataByRegion[region];
+                var total = regionalPlayers.Sum(p => p.TotalAttendance);
+                var average = regionalPlayers.Average(p => p.TotalAttendance);
+                var topPlayer = regionalPlayers.OrderByDescending(p => p.TotalAttendance).First();
+
+                writer.WriteLine($"Region {region}:");
+                writer.WriteLine($"Total: {total}");
+                writer.WriteLine($"Average: {Math.Round(average, 2)}");
+                writer.WriteLine($"Top Player: {topPlayer.Name} with {topPlayer.TotalAttendance} sessions");
+            }
+        }
+    }
+
+    private class PlayerInfo
+    {
+        public string Name { get; set; }
+        public string Region { get; set; }
+        public int TotalAttendance { get; set; }
+    }
+}
+
 internal class Program
 {
     public enum CategoryID : int
@@ -57,15 +173,251 @@ internal class Program
         // Program.DaySeven();
         // Program.DayEight();
         // Program.DayNine();
-        Program.DayTen();
+        // Program.DayTen();
+        Program.DayEleven();
+
+
+/*        double totalSeconds = 0;
+        Console.WriteLine($"Processing time: ");
+        for (int i = 0; i < 50; i++) // Stress-testing average performance for 50 times
+        {
+            stopwatch.Reset();
+            stopwatch.Start();
+            Program.DayTen();
+            stopwatch.Stop();
+            totalSeconds += stopwatch.Elapsed.TotalSeconds;
+            Console.Write($"{stopwatch.ElapsedMilliseconds} ");
+        }
+        Console.WriteLine($"\nStress-tested 50 times:\nAverage completion time: {totalSeconds/50} ms");
+*/
 
         stopwatch.Stop();
         Console.WriteLine($"\nPress any key to exit...\tProcessing time: {stopwatch.ElapsedMilliseconds} ms");
         Console.ReadKey();
         Environment.Exit(0);
     }
+    static void DayEleven()
+    {
+        static void Assignment()
+        {
+        //static string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        //instead of using your desktop path, where the file could not exist, I use insude project folder
+        static string localPath = @"..\..\..\InputAndOutputFiles\"; // we get the parent solution directory 
+        static string csvFileName = "rugby_tournament_scores";
+        static string csvFilePath = Path.Combine(localPath, csvFileName + ".csv");
+        static string outputFile = Path.Combine(localPath, "Stats_" + csvFileName + ".txt");
+        GoMain();
+        private static void GoMain(string[] args)
+        {
+            /*    
+            Analyse the provided CSV file and
+            * Calculate the total number of tries scored for each country
+            * Display the top scorer from each country
+            * What is the average monthly score for each country
+            * All results are outputted to the screen and a text file
+            * Produce Flow Chart(s) and Pseudocode for your solution's logic
+            * Code your solution using C#
+            * Justify your design approach
+            Bonus Tasks (A try is worth 5 points)
+            * What is the average number of points scored by each country for each month? Display to the nearest point.
+            * Rank the countries, highest scoring to lowest for each month of the tournament - showing total tries and points
+            * Rank the countries highest to lowest for the overall tournament - show total tries and points */
+
+            string[]? dataLines = ReadMyFile(csvFilePath);
+            try
+            {
+                if (dataLines == null || dataLines.Length < 2)
+                {
+                    throw new Exception($"File '{csvFilePath}' does not contain enough data or the file was not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Environment.Exit(0);
+            }
+            int dataLinesCounter = dataLines.Length;
+            string[] firstName = new string[dataLinesCounter];
+            string[] lastName = new string[dataLinesCounter];
+            string[] countryData = new string[dataLinesCounter];
+            int[] triesJan = new int[dataLinesCounter];
+            int[] triesFeb = new int[dataLinesCounter];
+            int[] triesMar = new int[dataLinesCounter];
+            int[] triesApr = new int[dataLinesCounter];
+            int[] triesMay = new int[dataLinesCounter];
+
+            for (int iLine = 0; iLine < dataLinesCounter; iLine++)
+            {
+                if (dataLines[iLine] != "")
+                {
+                    string[] separatedData = dataLines[iLine].Split(",");
+                    firstName[iLine] = separatedData[0];
+                    lastName[iLine] = separatedData[1];
+                    countryData[iLine] = separatedData[2];
+                    try
+                    {
+                        triesJan[iLine] = int.Parse(separatedData[3]);
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    try
+                    {
+                        triesFeb[iLine] = int.Parse(separatedData[4]);
+
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    try
+                    {
+                        triesMar[iLine] = int.Parse(separatedData[5]);
+
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    try
+                    {
+                        triesApr[iLine] = int.Parse(separatedData[6]);
+
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    try
+                    {
+                        triesMay[iLine] = int.Parse(separatedData[7]);
+
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                }
+            }
+
+            //string[] countries = { "France", "Italy", "England", "Ireland", "Wales", "Scotland" };
+            HashSet<string> countries = new HashSet<string>(countryData); // instead of hardcoding contruies, we create unique list from read contryData column
+
+            string outputString = "";
+            foreach (string country in countries)
+            {
+                outputString += CalculateData(country, firstName, lastName, countryData, triesJan, triesFeb, triesMar, triesApr, triesMay);
+            }
+            Console.WriteLine(outputString);
+            WriteMyFile(outputFile, outputString);
+
+            static string CalculateData(string country, string[] firstName, string[] lastName, string[] countryData, int[] triesJan,
+                int[] triesFeb, int[] triesMar, int[] triesApr, int[] triesMay)
+            {
+                string outputString = "";
+                int counterPerCountry = 0;
+                int total = 0;
+                string topScorer = "";
+                int topScore = 0;
+                int totalJan = 0, totalFeb = 0, totalMar = 0, totalApr = 0, totalMay = 0; //bonus task 1
+
+                for (int i = 0; i < countryData.Length; i++)
+                {
+                    if (country == countryData[i])
+                    {
+                        totalJan += triesJan[i];
+                        totalFeb += triesFeb[i];
+                        totalMar += triesMar[i];
+                        totalApr += triesApr[i];
+                        totalMay += triesMay[i];
+                        int currentTotal = triesJan[i] + triesFeb[i] + triesMar[i] + triesApr[i] + triesMay[i];
+                        total += currentTotal;
+                        if (topScore < currentTotal)
+                        {
+                            topScorer = firstName[i] + " " + lastName[i];
+                            topScore = currentTotal;
+                        }
+                        counterPerCountry++;
+                    }
+                }
+                double average = Math.Round((double)total / counterPerCountry, 2);
+                double averageJan = Math.Round(totalJan / (double)counterPerCountry, 2);
+                double averageFeb = Math.Round(totalFeb / (double)counterPerCountry, 2);
+                double averageMar = Math.Round(totalMar / (double)counterPerCountry, 2);
+                double averageApr = Math.Round(totalApr / (double)counterPerCountry, 2);
+                double averageMay = Math.Round(totalMay / (double)counterPerCountry, 2);
+                outputString = $"Stats for contry {country}:\nTotal games: {total}\nTop player: '{topScorer}' scored {topScore} goals\nAverage goals: {average}\n" +
+                    $"Average Per January: {averageJan}\tAverage Per February: {averageFeb}\tAverage Per March: {averageMar}\tAverage Per April: {averageApr}\tAverage Per May: {averageMay}\n";
+                return outputString;
+            }
+
+            static string[] ReadMyFile(string csvFilePath)
+            {
+                string[] dataLines;
+                try
+                {
+                    dataLines = File.ReadAllLines(csvFilePath).Skip(1).ToArray();
+                    return dataLines;
+                }
+                catch
+                (Exception ex)
+                { Console.WriteLine("Error:\n" + ex.Message); }
+                return null;
+            }
+
+            static void WriteMyFile(string path, string content, bool isAdd = false)
+            {
+                try
+                {
+                    if (!isAdd)
+                    {
+                        File.WriteAllText(path, content);
+                    }
+                    else if (File.Exists(path))
+                    {
+                        File.AppendAllText(path, content);
+                    }
+                    else
+                    {
+                        File.Create(path);
+                        File.AppendAllText(path, content);
+                    }
+                }
+                catch
+                (Exception ex)
+                { Console.WriteLine(ex.Message); }
+
+            }
+        }
+        }
+
+        //rugbyTournamentSocerOOP();
+        static void rugbyTournamentSocerOOP()
+        {
+string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string csvFilePath = Path.Combine(desktopPath, "rugby_tournament_scores.csv");
+        string outputFile = Path.Combine(desktopPath, "stats_rugby_tournament_scores.txt");
+        var analyzer = new PlayerAttendanceAnalyzer(csvFilePath, outputFile);
+
+        try
+        {
+            analyzer.AnalyzeAttendance();
+            Console.WriteLine("Player attendance statistics processed successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+        }
+        
+    }
     static void DayTen() // SupportTickets MVP
     {
+        //PlayerAttendanceOOP();
+        static void PlayerAttendanceOOP()
+        {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string csvFilePath = Path.Combine(desktopPath, "Players.csv");
+            string outputFile = Path.Combine(desktopPath, "PlayersStats.txt");
+
+            var analyzer = new PlayerAttendanceAnalyzer(csvFilePath, outputFile);
+
+            try
+            {
+                analyzer.AnalyzeAttendance();
+                Console.WriteLine("Player attendance statistics processed successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+
+        }
         PlayerAttendace();
         static void PlayerAttendace()
         {
@@ -81,37 +433,66 @@ internal class Program
             */
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
             string csvFilePath = desktopPath + @"Players.csv";
-            string[] regions = new string[] { "East", "West", "North", "South" };
-            string[] dataFile = ReadFile(csvFilePath).Skip(1).ToArray();
-            string[] dataLines = new string[dataFile.Length];
+            string fileToWrite = desktopPath + @"PlayersStats.txt";
+            string[] regions = { "East", "West", "North", "South" };
+            string[] dataFile = ReadFile(csvFilePath);
+            string[] dataLines = dataFile.Skip(1).ToArray(); // skip the headers
+            string[] namesData = new string[dataLines.Length];
+            string[] regionsData = new string[dataLines.Length];
+            int[] attendanceData = new int[dataLines.Length];
 
+            string[] splittedData = new string[dataLines.Length];
+            for (int iLine = 0; iLine < dataLines.Length; iLine++)
+            {
+                splittedData = dataLines[iLine].Split(",");
+                namesData[iLine] = splittedData[0];
+                regionsData[iLine] = splittedData[1];
+                try
+                {
+                    for (int iMonthlyAttendance = 2; iMonthlyAttendance < 7; iMonthlyAttendance++)
+                    {
+                        double num;
+                        double.TryParse(splittedData[iMonthlyAttendance], out num);
+                        attendanceData[iLine] += Convert.ToInt32(num); // we also can cast (int)num if we want to round to lover number
+                    }
+                }
+                catch (Exception ex) { Console.WriteLine($"Error appeared on line {iLine}\n{ex.Message}"); }
+            }
+
+            string compiledString = "";
             foreach (string region in regions)
             {
-                ProcessData(region, dataLines);
+                compiledString += ProcessData(region, regionsData, namesData, attendanceData);
             }
+            Console.WriteLine(compiledString); // print results
+            WriteMyFile(fileToWrite, compiledString, false); // write results to the file
 
-            static void ProcessData(string region, string[] dataLines)
+            static string ProcessData(string region, string[] regionsData, string[] namesData, int[] attendanceData)
             {
-                int[] regionTotalAttendance = new int[dataLines.Length];
+                int[] regionTotalAttendance = new int[namesData.Length];
                 string topName = "";
-                double average;
-                int total;
+                int total=0;
+                int topAttendance = 0;
                 int countPlayers = 0;
+                int previousValue = 0;
 
-                for (int i = 0; i < dataLines.Length; i++)
+                for (int i = 0; i < namesData.Length; i++)
                 {
-                    string[] splitData = dataLines[i].Split(',');
-                    Console.Write(splitData[0]);
+                    if (regionsData[i] == region)
+                    {
+                        int currentValue = attendanceData[i];
+                        total += currentValue;
+                        if (previousValue < currentValue)
+                        {
+                            topAttendance = currentValue;
+                            topName = namesData[i];
+                            previousValue = currentValue;
+                        }
+                        countPlayers++;
+                    }
                 }
-
-
-
-                Print();
-            }
-
-            static void Print()
-            {
-
+                double average = (double)total/countPlayers;
+                return $"\t\tRegion {region}:\nTotal: {total}\nAverage: {Math.Round(average, 2)}\nTop Name: {topName} with {topAttendance}\n";
             }
 
             static string[] ReadFile(string path)
@@ -124,7 +505,7 @@ internal class Program
                         throw new Exception($"File '{path}' does not contain enough data");
                     }
                     Console.WriteLine($"Read successfully {fileContent.Length - 1} lines (excluding header).");
-
+                    //foreach (string line in fileContent) { Console.WriteLine(line);  }
                     return fileContent;
                 }
                 catch (Exception ex)
@@ -133,8 +514,25 @@ internal class Program
                     return null;
                 }
             }
+            static void WriteMyFile(string path, string fileToWrite, bool isToAdd = true)
+            {
+                if (!File.Exists(path))
+                {
+                    File.Create(path);
+                }
+                try
+                {
+                    if (!isToAdd)
+                        File.WriteAllText(path, fileToWrite);
+                    else
+                        File.AppendAllText(path, fileToWrite);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            } // WriteMyFile()
         }
-
         //SupportTicketsMVP();
         static void SupportTicketsMVP()
         {
