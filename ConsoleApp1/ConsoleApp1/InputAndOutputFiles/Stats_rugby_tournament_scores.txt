@@ -1,0 +1,66 @@
+	======
+	FRANCE
+	======
+Total games: 95
+Top player: 'Gabriel Martin' scored 17 goals
+Average goals: 13.57
+Average Per January: 1.86
+Average Per February: 3
+Average Per March: 2.57
+Average Per April: 3.29
+Average Per May: 2.86
+	=====
+	ITALY
+	=====
+Total games: 112
+Top player: 'Alessandro Russo' scored 20 goals
+Average goals: 16
+Average Per January: 2.71
+Average Per February: 3.29
+Average Per March: 3.57
+Average Per April: 3.14
+Average Per May: 3.29
+	=======
+	ENGLAND
+	=======
+Total games: 114
+Top player: 'William Evans' scored 20 goals
+Average goals: 16.29
+Average Per January: 3.29
+Average Per February: 3.14
+Average Per March: 3
+Average Per April: 2.86
+Average Per May: 4
+	=======
+	IRELAND
+	=======
+Total games: 113
+Top player: 'Ryan Flanagan' scored 18 goals
+Average goals: 16.14
+Average Per January: 3.43
+Average Per February: 2.57
+Average Per March: 4
+Average Per April: 2.57
+Average Per May: 3.57
+	=====
+	WALES
+	=====
+Total games: 99
+Top player: 'Gareth Jones' scored 18 goals
+Average goals: 14.14
+Average Per January: 2.14
+Average Per February: 3.29
+Average Per March: 3.14
+Average Per April: 2
+Average Per May: 3.57
+	========
+	SCOTLAND
+	========
+Total games: 98
+Top player: 'Duncan Murray' scored 20 goals
+Average goals: 14
+Average Per January: 3
+Average Per February: 3.14
+Average Per March: 2.14
+Average Per April: 2.86
+Average Per May: 2.86

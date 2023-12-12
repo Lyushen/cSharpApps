@@ -1,0 +1,24 @@
+Stats for contry France:
+Total games:95
+Top player: Gabriel Martin scored 17 goals
+Average: 13.57
+Stats for contry Italy:
+Total games:112
+Top player: Alessandro Russo scored 20 goals
+Average: 16
+Stats for contry England:
+Total games:114
+Top player: William Evans scored 20 goals
+Average: 16.29
+Stats for contry Ireland:
+Total games:113
+Top player: Ryan Flanagan scored 18 goals
+Average: 16.14
+Stats for contry Wales:
+Total games:99
+Top player: Gareth Jones scored 18 goals
+Average: 14.14
+Stats for contry Scotland:
+Total games:98
+Top player: Duncan Murray scored 20 goals
+Average: 14

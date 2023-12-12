@@ -10,125 +10,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System;
 
 
-public class SoccerStats
-{
-    /*    
-    Analyse the provided CSV file and
-    * Calculate the total number of tries scored for each country
-    * Display the top scorer from each country
-    * What is the average monthly score for each country
-    * All results are outputted to the screen and a text file
-    * Produce Flow Chart(s) and Pseudocode for your solution's logic
-    * Code your solution using C#
-    * Justify your design approach
-    Bonus Tasks
-    * A try is worth 5 points. What is the average number of points scored by each country for each month? Display to the nearest point.
-    * Rank the countries, highest scoring to lowest for each month of the tournament - showing total tries and points
-    * Rank the countries highest to lowest for the overall tournament - show total tries and points */
-
-    //private readonly Dictionary<string, List<PlayerInfo>> playerDataByRegion = new Dictionary<string, List<PlayerInfo>>();
-    private readonly string[] countries = { "France", "Italy", "England", "Ireland", "Wales", "Scotland" };
-    private readonly string csvFilePath;
-    private readonly string outputFile;
-
-
-    private void ReadFile()
-    {
-        try
-        {
-            
-        }
-        catch (Exception ex) {
-            Console.Writeline(); }
-    }
-
-}
-
-
-public class PlayerAttendanceAnalyzer
-{
-    private readonly Dictionary<string, List<PlayerInfo>> playerDataByRegion = new Dictionary<string, List<PlayerInfo>>();
-    private readonly string[] regions = { "East", "West", "North", "South" };
-    private readonly string csvFilePath;
-    private readonly string outputFile;
-
-    public PlayerAttendanceAnalyzer(string csvFilePath, string outputFile)
-    {
-        this.csvFilePath = csvFilePath;
-        this.outputFile = outputFile;
-        foreach (var region in regions)
-        {
-            playerDataByRegion[region] = new List<PlayerInfo>();
-        }
-    }
-
-    public void AnalyzeAttendance()
-    {
-        LoadData();
-        WriteStatistics();
-    }
-
-    private void LoadData()
-    {
-        using (var reader = new StreamReader(csvFilePath))
-        {
-            reader.ReadLine(); // Skip header
-
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                var data = line.Split(',');
-                if (data.Length < 7) continue; // Skip invalid lines
-
-                var playerInfo = new PlayerInfo
-                {
-                    Name = data[0],
-                    Region = data[1],
-                    TotalAttendance = data.Skip(2).Take(5)
-                                          .Select(s => int.TryParse(s, out int value) ? value : 0)
-                                          .Sum()
-                };
-
-                if (playerDataByRegion.ContainsKey(playerInfo.Region))
-                {
-                    playerDataByRegion[playerInfo.Region].Add(playerInfo);
-                }
-            }
-        }
-    }
-
-    private void WriteStatistics()
-    {
-        using (var writer = new StreamWriter(outputFile))
-        {
-            foreach (var region in regions)
-            {
-                if (!playerDataByRegion.ContainsKey(region) || !playerDataByRegion[region].Any()) continue;
-
-                var regionalPlayers = playerDataByRegion[region];
-                var total = regionalPlayers.Sum(p => p.TotalAttendance);
-                var average = regionalPlayers.Average(p => p.TotalAttendance);
-                var topPlayer = regionalPlayers.OrderByDescending(p => p.TotalAttendance).First();
-
-                writer.WriteLine($"Region {region}:");
-                writer.WriteLine($"Total: {total}");
-                writer.WriteLine($"Average: {Math.Round(average, 2)}");
-                writer.WriteLine($"Top Player: {topPlayer.Name} with {topPlayer.TotalAttendance} sessions");
-            }
-        }
-    }
-
-    private class PlayerInfo
-    {
-        public string Name { get; set; }
-        public string Region { get; set; }
-        public int TotalAttendance { get; set; }
-    }
-}
-
 internal class Program
 {
-    public enum CategoryID : int
+    public enum CategoryID : int 
     {
         General,
         Child,
@@ -164,260 +48,204 @@ internal class Program
     private static void Main(string[] args)
     {
         stopwatch.Start();
-        // Program.DayOne();
-        // Program.DayTwo();
-        // Program.DayThree();
-        // Program.DayFour();
-        // Program.DayFive();
-        // Program.DaySix();
-        // Program.DaySeven();
-        // Program.DayEight();
-        // Program.DayNine();
-        // Program.DayTen();
+     // Program.DayOne();
+     // Program.DayTwo();
+     // Program.DayThree();
+     // Program.DayFour();
+     // Program.DayFive();
+     // Program.DaySix();
+     // Program.DaySeven();
+     // Program.DayEight();
+     // Program.DayNine();
+     // Program.DayTen();
         Program.DayEleven();
-
-
-/*        double totalSeconds = 0;
-        Console.WriteLine($"Processing time: ");
-        for (int i = 0; i < 50; i++) // Stress-testing average performance for 50 times
-        {
-            stopwatch.Reset();
-            stopwatch.Start();
-            Program.DayTen();
-            stopwatch.Stop();
-            totalSeconds += stopwatch.Elapsed.TotalSeconds;
-            Console.Write($"{stopwatch.ElapsedMilliseconds} ");
-        }
-        Console.WriteLine($"\nStress-tested 50 times:\nAverage completion time: {totalSeconds/50} ms");
-*/
 
         stopwatch.Stop();
         Console.WriteLine($"\nPress any key to exit...\tProcessing time: {stopwatch.ElapsedMilliseconds} ms");
         Console.ReadKey();
         Environment.Exit(0);
     }
+
     static void DayEleven()
     {
-        static void Assignment()
+        AssessmentTask();
+
+        static void AssessmentTask()
         {
-        //static string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        //instead of using your desktop path, where the file could not exist, I use insude project folder
-        static string localPath = @"..\..\..\InputAndOutputFiles\"; // we get the parent solution directory 
-        static string csvFileName = "rugby_tournament_scores";
-        static string csvFilePath = Path.Combine(localPath, csvFileName + ".csv");
-        static string outputFile = Path.Combine(localPath, "Stats_" + csvFileName + ".txt");
-        GoMain();
-        private static void GoMain(string[] args)
-        {
-            /*    
-            Analyse the provided CSV file and
-            * Calculate the total number of tries scored for each country
-            * Display the top scorer from each country
-            * What is the average monthly score for each country
-            * All results are outputted to the screen and a text file
-            * Produce Flow Chart(s) and Pseudocode for your solution's logic
-            * Code your solution using C#
-            * Justify your design approach
-            Bonus Tasks (A try is worth 5 points)
-            * What is the average number of points scored by each country for each month? Display to the nearest point.
-            * Rank the countries, highest scoring to lowest for each month of the tournament - showing total tries and points
-            * Rank the countries highest to lowest for the overall tournament - show total tries and points */
-
-            string[]? dataLines = ReadMyFile(csvFilePath);
-            try
+            //static string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //instead of using your desktop path, where the file could not exist, I use insude project folder
+            string localPath = @"..\..\..\InputAndOutputFiles\"; // we get the parent solution directory 
+            string csvFileName = "rugby_tournament_scores";
+            string csvFilePath = Path.Combine(localPath, csvFileName + ".csv");
+            string outputFile = Path.Combine(localPath, "Stats_" + csvFileName + ".txt");
+            GoMain(csvFilePath, outputFile);
+            static void GoMain(string csvFilePath, string outputFile)
             {
-                if (dataLines == null || dataLines.Length < 2)
+                /*    
+                Analyse the provided CSV file and
+                * Calculate the total number of tries scored for each country
+                * Display the top scorer from each country
+                * What is the average monthly score for each country
+                * All results are outputted to the screen and a text file
+                * Produce Flow Chart(s) and Pseudocode for your solution's logic
+                * Code your solution using C#
+                * Justify your design approach
+                Bonus Tasks (A try is worth 5 points)
+                * What is the average number of points scored by each country for each month? Display to the nearest point.
+                * Rank the countries, highest scoring to lowest for each month of the tournament - showing total tries and points
+                * Rank the countries highest to lowest for the overall tournament - show total tries and points */
+
+                string[]? dataLines = ReadMyFile(csvFilePath);
+                try
                 {
-                    throw new Exception($"File '{csvFilePath}' does not contain enough data or the file was not found");
+                    if (dataLines == null || dataLines.Length < 2)
+                    {
+                        throw new Exception($"File '{csvFilePath}' does not contain enough data or the file was not found");
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                System.Environment.Exit(0);
-            }
-            int dataLinesCounter = dataLines.Length;
-            string[] firstName = new string[dataLinesCounter];
-            string[] lastName = new string[dataLinesCounter];
-            string[] countryData = new string[dataLinesCounter];
-            int[] triesJan = new int[dataLinesCounter];
-            int[] triesFeb = new int[dataLinesCounter];
-            int[] triesMar = new int[dataLinesCounter];
-            int[] triesApr = new int[dataLinesCounter];
-            int[] triesMay = new int[dataLinesCounter];
-
-            for (int iLine = 0; iLine < dataLinesCounter; iLine++)
-            {
-                if (dataLines[iLine] != "")
+                catch (Exception ex)
                 {
-                    string[] separatedData = dataLines[iLine].Split(",");
-                    firstName[iLine] = separatedData[0];
-                    lastName[iLine] = separatedData[1];
-                    countryData[iLine] = separatedData[2];
-                    try
-                    {
-                        triesJan[iLine] = int.Parse(separatedData[3]);
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    try
-                    {
-                        triesFeb[iLine] = int.Parse(separatedData[4]);
-
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    try
-                    {
-                        triesMar[iLine] = int.Parse(separatedData[5]);
-
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    try
-                    {
-                        triesApr[iLine] = int.Parse(separatedData[6]);
-
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    try
-                    {
-                        triesMay[iLine] = int.Parse(separatedData[7]);
-
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    System.Environment.Exit(0);
                 }
-            }
+                int dataLinesCounter = dataLines.Length;
+                string[] firstName = new string[dataLinesCounter];
+                string[] lastName = new string[dataLinesCounter];
+                string[] countryData = new string[dataLinesCounter];
+                int[] triesJan = new int[dataLinesCounter];
+                int[] triesFeb = new int[dataLinesCounter];
+                int[] triesMar = new int[dataLinesCounter];
+                int[] triesApr = new int[dataLinesCounter];
+                int[] triesMay = new int[dataLinesCounter];
 
-            //string[] countries = { "France", "Italy", "England", "Ireland", "Wales", "Scotland" };
-            HashSet<string> countries = new HashSet<string>(countryData); // instead of hardcoding contruies, we create unique list from read contryData column
-
-            string outputString = "";
-            foreach (string country in countries)
-            {
-                outputString += CalculateData(country, firstName, lastName, countryData, triesJan, triesFeb, triesMar, triesApr, triesMay);
-            }
-            Console.WriteLine(outputString);
-            WriteMyFile(outputFile, outputString);
-
-            static string CalculateData(string country, string[] firstName, string[] lastName, string[] countryData, int[] triesJan,
-                int[] triesFeb, int[] triesMar, int[] triesApr, int[] triesMay)
-            {
-                string outputString = "";
-                int counterPerCountry = 0;
-                int total = 0;
-                string topScorer = "";
-                int topScore = 0;
-                int totalJan = 0, totalFeb = 0, totalMar = 0, totalApr = 0, totalMay = 0; //bonus task 1
-
-                for (int i = 0; i < countryData.Length; i++)
+                for (int iLine = 0; iLine < dataLinesCounter; iLine++)
                 {
-                    if (country == countryData[i])
+                    if (dataLines[iLine] != "")
                     {
-                        totalJan += triesJan[i];
-                        totalFeb += triesFeb[i];
-                        totalMar += triesMar[i];
-                        totalApr += triesApr[i];
-                        totalMay += triesMay[i];
-                        int currentTotal = triesJan[i] + triesFeb[i] + triesMar[i] + triesApr[i] + triesMay[i];
-                        total += currentTotal;
-                        if (topScore < currentTotal)
+                        string[] separatedData = dataLines[iLine].Split(",");
+                        firstName[iLine] = separatedData[0];
+                        lastName[iLine] = separatedData[1];
+                        countryData[iLine] = separatedData[2];
+                        try
                         {
-                            topScorer = firstName[i] + " " + lastName[i];
-                            topScore = currentTotal;
+                            triesJan[iLine] = int.Parse(separatedData[3]);
                         }
-                        counterPerCountry++;
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        try
+                        {
+                            triesFeb[iLine] = int.Parse(separatedData[4]);
+
+                        }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        try
+                        {
+                            triesMar[iLine] = int.Parse(separatedData[5]);
+
+                        }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        try
+                        {
+                            triesApr[iLine] = int.Parse(separatedData[6]);
+
+                        }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
+                        try
+                        {
+                            triesMay[iLine] = int.Parse(separatedData[7]);
+                        }
+                        catch (Exception ex) { Console.WriteLine(ex.Message); }
                     }
                 }
-                double average = Math.Round((double)total / counterPerCountry, 2);
-                double averageJan = Math.Round(totalJan / (double)counterPerCountry, 2);
-                double averageFeb = Math.Round(totalFeb / (double)counterPerCountry, 2);
-                double averageMar = Math.Round(totalMar / (double)counterPerCountry, 2);
-                double averageApr = Math.Round(totalApr / (double)counterPerCountry, 2);
-                double averageMay = Math.Round(totalMay / (double)counterPerCountry, 2);
-                outputString = $"Stats for contry {country}:\nTotal games: {total}\nTop player: '{topScorer}' scored {topScore} goals\nAverage goals: {average}\n" +
-                    $"Average Per January: {averageJan}\tAverage Per February: {averageFeb}\tAverage Per March: {averageMar}\tAverage Per April: {averageApr}\tAverage Per May: {averageMay}\n";
-                return outputString;
-            }
 
-            static string[] ReadMyFile(string csvFilePath)
-            {
-                string[] dataLines;
-                try
+                //string[] countries = { "France", "Italy", "England", "Ireland", "Wales", "Scotland" };
+                HashSet<string> countries = new HashSet<string>(countryData); // instead of hardcoding contruies, we create unique list from read contryData column
+
+                string outputString = "";
+                foreach (string country in countries)
                 {
-                    dataLines = File.ReadAllLines(csvFilePath).Skip(1).ToArray();
-                    return dataLines;
+                    outputString += CalculateData(country, firstName, lastName, countryData, triesJan, triesFeb, triesMar, triesApr, triesMay);
                 }
-                catch
-                (Exception ex)
-                { Console.WriteLine("Error:\n" + ex.Message); }
-                return null;
-            }
+                Console.WriteLine(outputString);
+                WriteMyFile(outputFile, outputString);
 
-            static void WriteMyFile(string path, string content, bool isAdd = false)
-            {
-                try
+                static string CalculateData(string country, string[] firstName, string[] lastName, string[] countryData, int[] triesJan,
+                    int[] triesFeb, int[] triesMar, int[] triesApr, int[] triesMay)
                 {
-                    if (!isAdd)
+                    string outputString = "";
+                    int counterPerCountry = 0;
+                    int total = 0;
+                    string topScorer = "";
+                    int topScore = 0;
+                    int totalJan = 0, totalFeb = 0, totalMar = 0, totalApr = 0, totalMay = 0; //bonus task 1
+
+                    for (int i = 0; i < countryData.Length; i++)
                     {
-                        File.WriteAllText(path, content);
+                        if (country == countryData[i])
+                        {
+                            totalJan += triesJan[i];
+                            totalFeb += triesFeb[i];
+                            totalMar += triesMar[i];
+                            totalApr += triesApr[i];
+                            totalMay += triesMay[i];
+                            int currentTotal = triesJan[i] + triesFeb[i] + triesMar[i] + triesApr[i] + triesMay[i];
+                            total += currentTotal;
+                            if (topScore < currentTotal)
+                            {
+                                topScorer = firstName[i] + " " + lastName[i];
+                                topScore = currentTotal;
+                            }
+                            counterPerCountry++;
+                        }
                     }
-                    else if (File.Exists(path))
-                    {
-                        File.AppendAllText(path, content);
-                    }
-                    else
-                    {
-                        File.Create(path);
-                        File.AppendAllText(path, content);
-                    }
+                    double average = Math.Round((double)total / counterPerCountry, 2);
+                    double averageJan = Math.Round(totalJan / (double)counterPerCountry, 2);
+                    double averageFeb = Math.Round(totalFeb / (double)counterPerCountry, 2);
+                    double averageMar = Math.Round(totalMar / (double)counterPerCountry, 2);
+                    double averageApr = Math.Round(totalApr / (double)counterPerCountry, 2);
+                    double averageMay = Math.Round(totalMay / (double)counterPerCountry, 2);
+                    outputString = $"\t{new string('=',country.Length)}\n\t{country.ToUpper()}\n\t{new string('=',country.Length)}\nTotal games: {total}\nTop player: '{topScorer}' scored {topScore} goals\nAverage goals: {average}\n" +
+                        $"Average Per January: {averageJan}\nAverage Per February: {averageFeb}\nAverage Per March: {averageMar}\nAverage Per April: {averageApr}\nAverage Per May: {averageMay}\n";
+                    return outputString;
                 }
-                catch
-                (Exception ex)
-                { Console.WriteLine(ex.Message); }
 
+                static string[] ReadMyFile(string csvFilePath)
+                {
+                    string[] dataLines;
+                    try {
+                        dataLines = File.ReadAllLines(csvFilePath).Skip(1).ToArray();
+                        return dataLines;
+                    }
+                    catch (Exception ex) { Console.WriteLine("Error:\n" + ex.Message); }
+                    return null;
+                }
+
+                static void WriteMyFile(string path, string content, bool isAdd = false)
+                {
+                    try
+                    {
+                        if (!isAdd)
+                        {
+                            File.WriteAllText(path, content);
+                        }
+                        else if (File.Exists(path))
+                        {
+                            File.AppendAllText(path, content);
+                        }
+                        else
+                        {
+                            File.Create(path);
+                            File.AppendAllText(path, content);
+                        }
+                    }
+                    catch
+                    (Exception ex)
+                    { Console.WriteLine(ex.Message); }
+
+                }
             }
-        }
-        }
-
-        //rugbyTournamentSocerOOP();
-        static void rugbyTournamentSocerOOP()
-        {
-string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string csvFilePath = Path.Combine(desktopPath, "rugby_tournament_scores.csv");
-        string outputFile = Path.Combine(desktopPath, "stats_rugby_tournament_scores.txt");
-        var analyzer = new PlayerAttendanceAnalyzer(csvFilePath, outputFile);
-
-        try
-        {
-            analyzer.AnalyzeAttendance();
-            Console.WriteLine("Player attendance statistics processed successfully.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred: {ex.Message}");
-        }
-        }
-        
-    }
+        } //AssessmentTask()
+    } //DayEleven()
     static void DayTen() // SupportTickets MVP
     {
-        //PlayerAttendanceOOP();
-        static void PlayerAttendanceOOP()
-        {
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string csvFilePath = Path.Combine(desktopPath, "Players.csv");
-            string outputFile = Path.Combine(desktopPath, "PlayersStats.txt");
-
-            var analyzer = new PlayerAttendanceAnalyzer(csvFilePath, outputFile);
-
-            try
-            {
-                analyzer.AnalyzeAttendance();
-                Console.WriteLine("Player attendance statistics processed successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-            }
-
-        }
         PlayerAttendace();
         static void PlayerAttendace()
         {
@@ -433,66 +261,37 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
             */
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
             string csvFilePath = desktopPath + @"Players.csv";
-            string fileToWrite = desktopPath + @"PlayersStats.txt";
-            string[] regions = { "East", "West", "North", "South" };
-            string[] dataFile = ReadFile(csvFilePath);
-            string[] dataLines = dataFile.Skip(1).ToArray(); // skip the headers
-            string[] namesData = new string[dataLines.Length];
-            string[] regionsData = new string[dataLines.Length];
-            int[] attendanceData = new int[dataLines.Length];
+            string[] regions = new string[] { "East", "West", "North", "South" };
+            string[] dataFile = ReadFile(csvFilePath).Skip(1).ToArray();
+            string[] dataLines = new string[dataFile.Length];
 
-            string[] splittedData = new string[dataLines.Length];
-            for (int iLine = 0; iLine < dataLines.Length; iLine++)
-            {
-                splittedData = dataLines[iLine].Split(",");
-                namesData[iLine] = splittedData[0];
-                regionsData[iLine] = splittedData[1];
-                try
-                {
-                    for (int iMonthlyAttendance = 2; iMonthlyAttendance < 7; iMonthlyAttendance++)
-                    {
-                        double num;
-                        double.TryParse(splittedData[iMonthlyAttendance], out num);
-                        attendanceData[iLine] += Convert.ToInt32(num); // we also can cast (int)num if we want to round to lover number
-                    }
-                }
-                catch (Exception ex) { Console.WriteLine($"Error appeared on line {iLine}\n{ex.Message}"); }
-            }
-
-            string compiledString = "";
             foreach (string region in regions)
             {
-                compiledString += ProcessData(region, regionsData, namesData, attendanceData);
+                ProcessData(region, dataLines);
             }
-            Console.WriteLine(compiledString); // print results
-            WriteMyFile(fileToWrite, compiledString, false); // write results to the file
 
-            static string ProcessData(string region, string[] regionsData, string[] namesData, int[] attendanceData)
+            static void ProcessData(string region, string[] dataLines)
             {
-                int[] regionTotalAttendance = new int[namesData.Length];
+                int[] regionTotalAttendance = new int[dataLines.Length];
                 string topName = "";
-                int total=0;
-                int topAttendance = 0;
+                double average;
+                int total;
                 int countPlayers = 0;
-                int previousValue = 0;
 
-                for (int i = 0; i < namesData.Length; i++)
+                for (int i = 0; i < dataLines.Length; i++)
                 {
-                    if (regionsData[i] == region)
-                    {
-                        int currentValue = attendanceData[i];
-                        total += currentValue;
-                        if (previousValue < currentValue)
-                        {
-                            topAttendance = currentValue;
-                            topName = namesData[i];
-                            previousValue = currentValue;
-                        }
-                        countPlayers++;
-                    }
+                    string[] splitData = dataLines[i].Split(',');
+                    Console.Write(splitData[0]);
                 }
-                double average = (double)total/countPlayers;
-                return $"\t\tRegion {region}:\nTotal: {total}\nAverage: {Math.Round(average, 2)}\nTop Name: {topName} with {topAttendance}\n";
+
+
+
+                Print();
+            }
+
+            static void Print()
+            {
+
             }
 
             static string[] ReadFile(string path)
@@ -505,7 +304,7 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
                         throw new Exception($"File '{path}' does not contain enough data");
                     }
                     Console.WriteLine($"Read successfully {fileContent.Length - 1} lines (excluding header).");
-                    //foreach (string line in fileContent) { Console.WriteLine(line);  }
+
                     return fileContent;
                 }
                 catch (Exception ex)
@@ -514,25 +313,8 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
                     return null;
                 }
             }
-            static void WriteMyFile(string path, string fileToWrite, bool isToAdd = true)
-            {
-                if (!File.Exists(path))
-                {
-                    File.Create(path);
-                }
-                try
-                {
-                    if (!isToAdd)
-                        File.WriteAllText(path, fileToWrite);
-                    else
-                        File.AppendAllText(path, fileToWrite);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            } // WriteMyFile()
         }
+
         //SupportTicketsMVP();
         static void SupportTicketsMVP()
         {
@@ -612,7 +394,7 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
         {
             string textToFile = "";
             // Display table
-            textToFile += "Name\tDivision\tWeek 1\tWeek 2\tWeek 3\tWeek 4\tWeek 5\n";
+            textToFile+="Name\tDivision\tWeek 1\tWeek 2\tWeek 3\tWeek 4\tWeek 5\n";
             for (int row = 0; row < namesAndDivisions.GetLength(0); row++)
             {
                 // Start with the name and division
@@ -785,8 +567,7 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
             {
                 string[]? dataLines = new string[] { };
                 dataLines = File.ReadAllLines(csvFilePath);
-                if (dataLines.Length == 0)
-                {
+                if (dataLines.Length == 0 ) {
                     throw new Exception($"File '{csvFilePath}' does not contain data");
                 }
                 string[]? apprentices = dataLines.Skip(1).ToArray();
@@ -815,8 +596,8 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
             {
                 Console.WriteLine($"Error:\n{ex.Message}");
             }
-
-            static void DisplayAgeInfo(string[] firstName, string[] lastName, int[] apprentAge)
+            
+            static void DisplayAgeInfo(string[] firstName, string[] lastName,int[] apprentAge)
             {
                 Console.WriteLine($"There are {apprentAge.Length} students");
                 Console.WriteLine($"The youngest student is {apprentAge.Min()}");
@@ -830,21 +611,21 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
             }
         }
         static void ComeBackToDaySeven()
+        { 
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
+        string csvFilePath = desktopPath + @"SampleCSV.csv";
+        string[] importedCSV = File.Exists(csvFilePath) ? File.ReadAllLines(csvFilePath) : new string[] { };
+        int totalLines = importedCSV.Length;
+        bool isHeader=true;
+
+        List<int> ages = new List<int>();
+        List<string> names = new List<string>();
+
+        for (int i = 1; i < totalLines; i++)
         {
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
-            string csvFilePath = desktopPath + @"SampleCSV.csv";
-            string[] importedCSV = File.Exists(csvFilePath) ? File.ReadAllLines(csvFilePath) : new string[] { };
-            int totalLines = importedCSV.Length;
-            bool isHeader = true;
-
-            List<int> ages = new List<int>();
-            List<string> names = new List<string>();
-
-            for (int i = 1; i < totalLines; i++)
-            {
-                string[] dataFields = importedCSV[i].Split(",");
-                ages.Add(int.Parse(dataFields[2]));
-            }
+            string[] dataFields = importedCSV[i].Split(",");
+            ages.Add(int.Parse(dataFields[2]));
+        }
         } // comeBackToDaySeven()
     } // DayEight()
     static void DaySeven()
@@ -871,11 +652,10 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
             }*/
             int linecount = 0;
             int totalAge = 0;
-
+            
             int skipNumberLines = 0;
             bool isHeader = false;
-            if (isHeader)
-            {
+            if (isHeader) {
                 skipNumberLines = 1;
             }
             // never use CristianName or SurName, always use FirstName and LastName.
@@ -904,9 +684,9 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
                 linecount++;
             }
 
-            for (int i = 0; i < totalLines; i++)
+            for (int i=0;  i < totalLines; i++)
             {
-                Console.WriteLine($"Student #{i + 1} '{studentNames[i]}' aged '{ages[i]}'");
+                Console.WriteLine($"Student #{i+1} '{studentNames[i]}' aged '{ages[i]}'");
             }
 
             //double averageAge = Math.Round((double)totalAge / linecount ,2);
@@ -918,64 +698,63 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
             Console.WriteLine($"The youngest student is {ages.Min()}");
             Console.WriteLine($"The oldest student is {ages.Max()}");
             Console.WriteLine($"The average age of all students {ages.Average():F2}");
-            Console.WriteLine($"The average age of all students {Math.Round(ages.Average(), 2)}");
+            Console.WriteLine($"The average age of all students {Math.Round(ages.Average(),2)}");
 
 
         } // ReadViaFileMethod()
-        static void ReadViaStreamReaderMethod()
+        static void ReadViaStreamReaderMethod() { 
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
+        string csvFilePath = desktopPath + @"SampleCSV.csv";
+        int lineCount = File.ReadLines(csvFilePath).Count();
+        string[] importedCSV = new string[lineCount];
+        importedCSV = ImporterSR(csvFilePath);
+        string[] outputToTable = new string[importedCSV.Length];
+        string outputToString = "";
+
+        for (int i = 0; i < importedCSV.Length; i++)
         {
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
-            string csvFilePath = desktopPath + @"SampleCSV.csv";
-            int lineCount = File.ReadLines(csvFilePath).Count();
-            string[] importedCSV = new string[lineCount];
-            importedCSV = ImporterSR(csvFilePath);
-            string[] outputToTable = new string[importedCSV.Length];
-            string outputToString = "";
+            string tmp = importedCSV[i].Replace(",", "\t");
+            outputToTable[i] = tmp;
+            outputToString += tmp + "\n";
+        }
 
-            for (int i = 0; i < importedCSV.Length; i++)
+        Console.WriteLine($"The header line is: '{outputToTable[0]}'");
+        Console.WriteLine($"Tenth data line is: '{outputToTable[10]}'");
+        Console.WriteLine($"Number of data lines: '{outputToTable.Length}'");
+        //Console.WriteLine($"\nWhole table here:\n{outputToString}");
+
+        var table = new Table();
+        table.LoadFromCsvArray(importedCSV);
+        Console.WriteLine(table.ToString());
+
+        static string[] ImporterSR(string path)
+        {
+            StreamReader sr;
+            if (File.Exists(path))
             {
-                string tmp = importedCSV[i].Replace(",", "\t");
-                outputToTable[i] = tmp;
-                outputToString += tmp + "\n";
-            }
+                var lineCount = File.ReadLines(path).Count();
+                string[] array = new string[lineCount];
 
-            Console.WriteLine($"The header line is: '{outputToTable[0]}'");
-            Console.WriteLine($"Tenth data line is: '{outputToTable[10]}'");
-            Console.WriteLine($"Number of data lines: '{outputToTable.Length}'");
-            //Console.WriteLine($"\nWhole table here:\n{outputToString}");
-
-            var table = new Table();
-            table.LoadFromCsvArray(importedCSV);
-            Console.WriteLine(table.ToString());
-
-            static string[] ImporterSR(string path)
-            {
-                StreamReader sr;
-                if (File.Exists(path))
+                sr = new StreamReader(path);
+                int counter = 0;
+                while (!sr.EndOfStream)
                 {
-                    var lineCount = File.ReadLines(path).Count();
-                    string[] array = new string[lineCount];
-
-                    sr = new StreamReader(path);
-                    int counter = 0;
-                    while (!sr.EndOfStream)
+                    try
                     {
-                        try
-                        {
-                            array[counter] = sr.ReadLine();
-                            counter++;
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
+                        array[counter] = sr.ReadLine();
+                        counter++;
                     }
-                    sr.Close();
-                    return array;
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                 }
-                else
-                    return null;
-            } // Importer();
+                sr.Close();
+                return array;
+            }
+            else
+                return null;
+        } // Importer();
         } //ReadViaStreamReaderMethod()
     } // DaySeven()
     static void DaySix()
@@ -1040,7 +819,7 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
                             string str = "";
                             Console.WriteLine($"File content:\n");
                             for (int i = 1; i < 4; i++)
-                            {
+                            { 
                                 str += fileReader.ReadLine() + "\n";
                             }
                             Console.WriteLine(str);
@@ -1050,7 +829,7 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
                             Console.WriteLine($"File content:\n{fileReader.ReadToEnd()}");
                         }
                         fileReader.Close();
-                        return true;
+                        return true; 
                     }
                 }
                 catch (DirectoryNotFoundException ed)
@@ -1067,7 +846,7 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
                 }
                 return false;
             }
-            static bool WriteMyFile(string path, string text, bool add = true)
+            static bool WriteMyFile(string path, string text, bool add=true)
             {
                 string? directoryPath = Path.GetDirectoryName(path);
                 if (!Directory.Exists(directoryPath))
@@ -1077,7 +856,7 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
                 }
                 try
                 {
-                    using (StreamWriter fileWriter = new StreamWriter(path, add))
+                    using (StreamWriter fileWriter = new StreamWriter(path,add))
                     {
                         fileWriter.Write(text, add);
                         fileWriter.Close();
@@ -1101,10 +880,10 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
         } // MyStreamWriterPrompt()
         static void MyStreamWriter()
         {
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)+"\\";
             string desktopFilePath = desktopPath + @"simple.txt";
             string helloText = "Hello World!";
-
+            
             Console.WriteLine(desktopFilePath);
 
             // creating directory if it doesn't exist
@@ -1117,21 +896,20 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
             try
             {
                 using (StreamWriter fileWriter = new StreamWriter(desktopFilePath))
-                {
+                { 
                     fileWriter.WriteLine(helloText, true);
                     fileWriter.Close();
                 }
             }
             catch (DirectoryNotFoundException ed)
-            {
-                Console.WriteLine($"Error: '{ed.Message}'\nFile doesn't exist");
+            { Console.WriteLine($"Error: '{ed.Message}'\nFile doesn't exist"); 
             }
             catch (FileNotFoundException ef)
             {
                 Console.WriteLine($"Error: '{ef.Message}'\nFile doesn't exist");
             }
             catch (Exception e)
-            {
+            {  
                 Console.WriteLine(e.Message);
             }
 
@@ -1147,7 +925,7 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
 
             for (int i = 1; i <= lines; i++)
             {
-                fileText += "Line #" + i + ": " + helloText + "\n";
+                fileText += "Line #"+i+": "+ helloText + "\n";
             }
             Console.WriteLine(fileText);
             File.WriteAllText("helloworld10.txt", fileText);
@@ -1213,7 +991,7 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
             {
                 percentages[i] = Math.Round((counts[i] / (double)totalIterations) * 100, 2);
             }
-            for (int i = 0; i < percentages.Length; i++)
+            for (int i = 0 ; i < percentages.Length ; i++)
             {
                 Console.WriteLine($"The probability chance for number {i + 1} is {percentages[i]}%");
             }
@@ -2187,7 +1965,7 @@ string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop
         decimal divisionAnswerDecimal = readFirstNumber17 / (decimal)readSecondNumber17;
         Console.WriteLine($"The division for different types are:\nDouble: {divisionAnswerDouble}.\nDecimal: {divisionAnswerDecimal}.\nFloat: {divisionAnswerFloat}.");
     } // DayOne()
-    static int ReAskNumber(string messageToUser)
+    static int  ReAskNumber(string messageToUser)
     {
         int number = 0;
         bool numberSuccess = false;
