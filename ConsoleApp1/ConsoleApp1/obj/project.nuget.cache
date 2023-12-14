@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "+06eiSim03u8ghOrooK5eU1Hf6znZBkgTyk9u96EwUoCxFssz+w5r84UQtpP3c51G0FVhtFEJiM6zC0di8RDvw==",
+  "dgSpecHash": "9lTq+oP7kUWLHHXuJKJftYvm3x0/nyrWTNNsvCFf9rN2aYooyudTSaT77d7W5BlhNmM6LdYNX4BzUw5rW37tuw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ICTLearner10\\Source\\Repos\\Lyushen\\cSharpApps\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\Oleksii\\source\\repos\\cSharpApps\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Oleksii\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Oleksii\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Oleksii\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Oleksii\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.14\\microsoft.netcore.app.host.win-x64.7.0.14.nupkg.sha512"
+  ],
   "logs": []
 }
