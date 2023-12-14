@@ -10,7 +10,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System;
 using System.Diagnostics.Metrics;
 using System.Collections;
-
+using System.Text.RegularExpressions;
+using System.Reflection;
+using System.Xml.Linq;
 
 internal class Program
 {
@@ -50,24 +52,156 @@ internal class Program
     private static void Main(string[] args)
     {
         stopwatch.Start(); //strarting our measurment for program running
-     /* Program.DayOne();
-        Program.DayTwo();
-        Program.DayThree();
-        Program.DayFour();
-        Program.DayFive();
-        Program.DaySix();
-        Program.DaySeven();
-        Program.DayEight();
-        Program.DayNine();
-        Program.DayTen();
-        Program.DayEleven();*/
-        Program.DayTwelve();
-     
+        /* Program.DayOne();
+           Program.DayTwo();
+           Program.DayThree();
+           Program.DayFour();
+           Program.DayFive();
+           Program.DaySix();
+           Program.DaySeven();
+           Program.DayEight();
+           Program.DayNine();
+           Program.DayTen();
+           Program.DayEleven();
+           Program.DayTwelve();*/
+           Program.Day13();
+
 
         stopwatch.Stop();
         Console.WriteLine($"\nPress any key to exit...\tProcessing time: {stopwatch.ElapsedMilliseconds} ms");
         Console.ReadKey();
         Environment.Exit(0);
+    }
+
+    static void Day13()
+    {
+        /*
+        Categorise subjects by age as follows
+
+        Child < 13
+        Teenage 13-19 inclusive
+        Young Adult: 20-30 inclusive
+        Adult 31-60 inclusive
+        Older person 61 and older
+        For each category, calculate and report (on screen and in file) the following:
+
+        Total time spent online 
+        Average time a subject in this category spends online
+        Identify the subject that spends the most time online
+        Provide Design (Flow Chart and Pseudocode)
+        Code solution
+        */
+        string localPath = @"..\..\..\..\..\inputFiles\"; // we get the parent solution directory 
+        string csvFileName = "TimeOnlineByAge";
+        string csvFilePath = Path.Combine(localPath, csvFileName + ".csv");
+
+        List<DataFromFile> dataList = TimeOnlineSurv.ParseCSV(csvFilePath);
+        var groupedByCategory = dataList.GroupBy(data => data.Category);
+        
+        var outputText = "";
+        foreach (var categoryGroup in groupedByCategory)
+        {
+            outputText += $"Category: {categoryGroup.Key}\n";
+            var counter = 0;
+            var total = 0.0;
+            var topSub = "";
+            var topSubHours = 0.0;
+            foreach (var data in categoryGroup)
+            {
+                double sum = data.Hours_Sat + data.Hours_Tue + data.Hours_Wed + data.Hours_Thu + data.Hours_Fri + data.Hours_Sat + data.Hours_Sun;
+                total += sum;
+                if (topSubHours < sum)
+                {
+                    topSubHours = sum;
+                    topSub = data.Name;
+                }
+                //Console.WriteLine($"    Hours - Mon: {data.Hours_Mon}, Tue: {data.Hours_Tue}, Wed: {data.Hours_Wed}, Thu: {data.Hours_Thu}, Fri: {data.Hours_Fri}, Sat: {data.Hours_Sat}, Sun: {data.Hours_Sun}");
+                counter++;
+            }
+            outputText += $"Total: {total}\n";
+            outputText += $"Average: {total/counter:F2}\n";
+            outputText += $"Top Subject: {topSub} with {topSubHours} hours\n\n";
+        }
+        Print(outputText);
+        //Write(outputText); ?
+    }
+    public class DataFromFile
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public string Category { get; set; }
+        public double Hours_Mon { get; set; }
+        public double Hours_Tue { get; set; }
+        public double Hours_Wed { get; set; }
+        public double Hours_Thu { get; set; }
+        public double Hours_Fri { get; set; }
+        public double Hours_Sat { get; set; }
+        public double Hours_Sun { get; set; }
+    }
+    public class TimeOnlineSurv
+    {
+        public static List<DataFromFile> dataList = new List<DataFromFile>();
+
+        private static string GetCategory(int age)
+        {
+            switch (age)
+            {
+                case < 13: return "Child";
+                case <= 13: return "Teenage";
+                case <= 20: return "Young Adult";
+                case <= 31: return "Older";
+                default: return "Adult";
+            }
+        }
+    /*  static public string Calculate()
+        { 
+            
+        }*/
+        static public List<DataFromFile> ParseCSV (string path)
+        {
+
+            string[] dataLines = new string[] { };
+            try
+            {
+                dataLines = File.ReadAllLines(path)
+                    .Skip(1)
+                    .Where(line => !string.IsNullOrWhiteSpace(line)) // Skip empty lines
+                    .ToArray();
+                if (dataLines.Length < 2)
+                {
+                    throw new Exception("Data Lines is not enough to process");
+                }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+            foreach (string line in dataLines)
+            {
+                string[] splitted = line.Split(',');
+                int.TryParse(splitted[1], out int ageInt);
+                double.TryParse(splitted[2], out double hoursMon);
+                double.TryParse(splitted[3], out double hoursTue);
+                double.TryParse(splitted[4], out double hoursWed);
+                double.TryParse(splitted[5], out double hoursThu);
+                double.TryParse(splitted[6], out double hoursFri);
+                double.TryParse(splitted[7], out double hoursSat);
+                double.TryParse(splitted[8], out double hoursSun);
+
+                dataList.Add(new DataFromFile
+                {
+                    Name = splitted[0],
+                    Age = ageInt,
+                    Category = GetCategory(ageInt),
+                    Hours_Mon = hoursMon,
+                    Hours_Tue = hoursTue,
+                    Hours_Wed = hoursWed,
+                    Hours_Thu = hoursThu,
+                    Hours_Fri = hoursFri,
+                    Hours_Sat = hoursSat,
+                    Hours_Sun = hoursSun
+                }) ;
+            }
+            return dataList;
+        }
     }
 
 
@@ -114,10 +248,10 @@ internal class Program
         Print(welcomeMessage);
         Print(new string('=', welcomeMessage.Length));
         // Weekly(1)/Montly(2)/Annual(3)
-        int salaryPeriod = ReAskIntRange("Would you like to enter your salary Weekly(1)/Montly(2)/Annual(3)?", 1, 3);
-        double salary = ReAskDobuleRange("Please enter your salary");
+        double salaryPeriod = ReAskRange("Would you like to enter your salary Weekly(1)/Montly(2)/Annual(3)?", 1, 3);
+        double salary = ReAskRange("Please enter your salary");
         bool isBeforeTaxes = ReAskYesNo($"Is your salary {salary} before taxes?");
-        double taxCredit = ReAskDobuleRange("Please enter your Tax Credit");
+        double taxCredit = ReAskRange("Please enter your Tax Credit");
         double currentTaxRate = 40000.00; // less than 40k, it will be 20% deduction, if more 40%.
         double[] percantageTaxRates = new double[] { 20.00, 40.00 };
         Print($"Current Tax Rate is {currentTaxRate}. Before {currentTaxRate}, deduction will be {percantageTaxRates[0]}%, all above {percantageTaxRates[1]}%");
@@ -182,38 +316,73 @@ internal class Program
         }
         static int ReAskIntRange(string message, int min=1, int max=10_000_000)
         {
-            int number = 0;
-            Console.Write($"{message} > ");
-            do {
-                try  //int.TryParse(Console.ReadLine(), out number);
-                {       
-                    stopwatch.Stop();
-                    number = Convert.ToInt32(Console.ReadLine());
-                    stopwatch.Start();
-                }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
-                
-                if (!(number >= min && number <= max))
-                    Console.Write($"Error: {message} between {min} and {max} > ");
-            }
-            while (!(number >= min && number <= max));
-            return number;
-        } // ReAskIntRange()
-        static double ReAskDobuleRange(string message, double min = 1.00, double max = 10_000_000.00)
-        {
-            double number = 0;
-            Console.Write($"{message} > ");
-            do
+            while (true)
             {
+                Console.Write($"{message} [{min}-{max}] > ");
                 stopwatch.Stop();
-                double.TryParse(Console.ReadLine(), out number);
+                string input = Console.ReadLine() ?? "";
                 stopwatch.Start();
-                if (!(number >= min && number <= max))
-                    Console.Write($"Error: {message} between {min:F2} and {max:F2} > ");
+                int number = SimplifyInput<int>(input);
+                if (number >= min && number <= max)
+                {
+                    return number;
+                }
+                Console.WriteLine($"Error: Please enter a number between {min} and {max}.");
             }
-            while (!(number >= min && number <= max));
-            return Math.Round(number, 2);
+        } // ReAskIntRange()
+        static double ReAskRange(string message, double min = 0.01, double max = 10_000_000.00)
+        {
+            while (true)
+            {
+                Console.Write($"{message} [{min}-{max}] > ");
+                stopwatch.Stop();
+                string input = Console.ReadLine() ?? "";
+                stopwatch.Start();
+                input = input.Replace(" ", "");
+                double number = 0;
+                input = Regex.Replace(input, @"(\d+(\.\d+)?)(k|K)", m =>
+                {
+                    if (double.TryParse(m.Groups[1].Value, out double localNumber))
+                    {
+                        localNumber *= 1000; // Multiply by 1000 for 'k'
+                        number = localNumber; // Assign the calculated value to the outer variable
+                    }
+                    return m.Value;
+                });
+                if (number >= min && number <= max)
+                {
+                    return Math.Round(number, 2);
+                }
+                Console.WriteLine($"Error: Please enter a number between {min} and {max}.");
+            }
         } // ReAskDobuleRange()
+
+        static T SimplifyInput<T>(string input) where T : struct
+        {
+            input = input.Replace(" ", "");
+            string pattern = @"(\d+(\.\d+)?)(k|K)";
+            input = Regex.Replace(input, pattern, m =>
+            {
+                if (double.TryParse(m.Groups[1].Value, out double number))
+                {
+                    number *= 1000; // Multiply by 1000 for 'k'
+                    return typeof(T) == typeof(int) ? ((int)number).ToString() : number.ToString();
+                }
+                return m.Value;
+            });
+
+            // Depending on T, parse the input as int or double
+            if (typeof(T) == typeof(int) && int.TryParse(input, out int intValue))
+            {
+                return (T)(object)intValue;
+            }
+            else if (typeof(T) == typeof(double) && double.TryParse(input, out double doubleValue))
+            {
+                return (T)(object)doubleValue;
+            }
+            else 
+                return (T)(object)input;
+        }
         static void Print(string text, bool isNewLine=true)
         {
             if (isNewLine)
@@ -239,7 +408,7 @@ internal class Program
                 return userInput;
             }
         }
-    }
+    } // DayTwelve() in progress
     static void DayEleven()
     {
         AssessmentTask();
@@ -2162,6 +2331,13 @@ internal class Program
         }
         return number;
     } // ReAskNumber()
+    static void Print(string text, bool isNewLine = true)
+    {
+        if (isNewLine)
+            Console.WriteLine(text);
+        else
+            Console.Write(text);
+    }// Print()
     static void PrintStats(string category, params int[] myArray)
     {
         if (myArray.Length > 0 && myArray.Sum() != 0)
