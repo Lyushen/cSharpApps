@@ -1,5 +1,5 @@
 # 💫 About Me:
-I'm currently doing a Software Development Apprenticeship<br>Looking to demonstrate my skills<br>Any collaboration is welcomed<br>I learn how to learn<br>You can ask me about anything, but preferable topic is weather<br>
+I'm currently doing a Software Development Apprenticeship<br>Looking to demonstrate my skills<br>Any collaboration is welcomed<br>I learn how to learn<br>You can ask me about anything, but the preferable topic is weather<br>
 
 
 ## 🌐 Socials:
