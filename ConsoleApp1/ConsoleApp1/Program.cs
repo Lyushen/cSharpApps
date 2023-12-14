@@ -13,6 +13,8 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using System.Xml.Linq;
+using static Program.TimeOnlineSurv;
+using static System.Formats.Asn1.AsnWriter;
 
 internal class Program
 {
@@ -63,14 +65,87 @@ internal class Program
            Program.DayNine();
            Program.DayTen();
            Program.DayEleven();
-           Program.DayTwelve();*/
-           Program.Day13();
+           Program.DayTwelve();
+           Program.Day13();*/
+           Program.Day14();
 
 
         stopwatch.Stop();
         Console.WriteLine($"\nPress any key to exit...\tProcessing time: {stopwatch.ElapsedMilliseconds} ms");
         Console.ReadKey();
         Environment.Exit(0);
+    }
+
+    static void Day14()
+    {
+
+        /*Calculate and display
+
+        The pharmacy with the highest sales in each county
+        The average per county
+        The total sales per county*/
+        string fileName = "pharmacy";
+        string inputFile = fileName + ".csv";
+        string outputFile = fileName + ".txt";
+
+        string[] dataLines = ReadMyFile(inputFile);
+        //foreach (string line in dataLines) Print(line);
+        int linesCount = dataLines.Length;
+
+        string[] pharmacyStores = new string[linesCount];
+        string[] counties = new string[linesCount];
+        double[] q1 = new double[linesCount];
+        double[] q2 = new double[linesCount];
+        double[] q3 = new double[linesCount];
+        double[] q4 = new double[linesCount];
+
+        double[] topSales = new double[linesCount];
+        string[] topSeller = new string[linesCount];
+        double[] totalSales = new double[linesCount];
+
+        // Slipt and process the data
+        for (int i = 0; i < dataLines.Length; i++) 
+        {
+            string[] splittedData = dataLines[i].Split(",");
+            pharmacyStores[i] = splittedData[0];
+            counties[i] = splittedData[1];
+            double.TryParse(splittedData[2], out q1[i]);
+            double.TryParse(splittedData[3], out q2[i]);
+            double.TryParse(splittedData[4], out q3[i]);
+            double.TryParse(splittedData[5], out q4[i]);
+        }
+
+
+        //Console.WriteLine(ProcessData());
+        //foreach (string s in uniqueCounties) { Print(s); }
+        string outputString = ProcessData(pharmacyStores, counties, q1, q2, q3, q4);
+
+        // Process data and build a string to output
+        static string ProcessData(string[] pharmacyStores, string[] counties, double[] q1, double[] q2, double[] q3, double[] q4)
+        {
+            string outputString = "";
+            HashSet<string> uniqueCounties = new HashSet<string>(counties);
+
+            foreach (string county in counties)
+            {
+                
+            }
+            return outputString;
+        }
+
+
+        static string[] ReadMyFile(string path)
+        {
+            string[] dataLines = new string[] { };
+            try
+            {
+                dataLines = File.ReadAllLines(path).Skip(1).Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
+                if (dataLines.Length < 2) { throw new Exception($"Error: The file '{path}' doesn't exist or contain enough data."); }
+                return dataLines;
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            return dataLines;
+        }
     }
 
     static void Day13()
@@ -96,40 +171,16 @@ internal class Program
         string csvFilePath = Path.Combine(localPath, csvFileName + ".csv");
 
         List<DataFromFile> dataList = TimeOnlineSurv.ParseCSV(csvFilePath);
-        var groupedByCategory = dataList.GroupBy(data => data.Category);
-        
-        var outputText = "";
-        foreach (var categoryGroup in groupedByCategory)
-        {
-            outputText += $"Category: {categoryGroup.Key}\n";
-            var counter = 0;
-            var total = 0.0;
-            var topSub = "";
-            var topSubHours = 0.0;
-            foreach (var data in categoryGroup)
-            {
-                double sum = data.Hours_Sat + data.Hours_Tue + data.Hours_Wed + data.Hours_Thu + data.Hours_Fri + data.Hours_Sat + data.Hours_Sun;
-                total += sum;
-                if (topSubHours < sum)
-                {
-                    topSubHours = sum;
-                    topSub = data.Name;
-                }
-                //Console.WriteLine($"    Hours - Mon: {data.Hours_Mon}, Tue: {data.Hours_Tue}, Wed: {data.Hours_Wed}, Thu: {data.Hours_Thu}, Fri: {data.Hours_Fri}, Sat: {data.Hours_Sat}, Sun: {data.Hours_Sun}");
-                counter++;
-            }
-            outputText += $"Total: {total}\n";
-            outputText += $"Average: {total/counter:F2}\n";
-            outputText += $"Top Subject: {topSub} with {topSubHours} hours\n\n";
-        }
-        Print(outputText);
+        string outputString = TimeOnlineSurv.Calculate();
+        Print(outputString);
+
         //Write(outputText); ?
     }
     public class DataFromFile
     {
         public string Name { get; set; }
         public int Age { get; set; }
-        public string Category { get; set; }
+        public Category Category { get; set; }
         public double Hours_Mon { get; set; }
         public double Hours_Tue { get; set; }
         public double Hours_Wed { get; set; }
@@ -141,22 +192,56 @@ internal class Program
     public class TimeOnlineSurv
     {
         public static List<DataFromFile> dataList = new List<DataFromFile>();
-
-        private static string GetCategory(int age)
+        public enum Category
+        {
+            Child,
+            Teenage,
+            YoungAdult,
+            Older,
+            Adult
+        }
+        private static Category GetCategory(int age)
         {
             switch (age)
             {
-                case < 13: return "Child";
-                case <= 13: return "Teenage";
-                case <= 20: return "Young Adult";
-                case <= 31: return "Older";
-                default: return "Adult";
+                case < 13: return Category.Child;
+                case <= 13: return Category.Teenage;
+                case <= 20: return Category.YoungAdult;
+                case <= 31: return Category.Older;
+                default: return Category.Adult;
             }
         }
-    /*  static public string Calculate()
-        { 
-            
-        }*/
+      static public string Calculate()
+        {
+            var orderedGroups = dataList.GroupBy(data => data.Category)
+                            .OrderBy(group => group.Key); 
+            var groupedByCategory = dataList.GroupBy(data => data.Category);
+            var outputText = "";
+            foreach (var categoryGroup in groupedByCategory)
+            {
+                outputText += $"Category: {categoryGroup.Key}\n";
+                var counter = 0;
+                var total = 0.0;
+                var topSub = "";
+                var topSubHours = 0.0;
+                foreach (var data in categoryGroup)
+                {
+                    double sum = data.Hours_Sat + data.Hours_Tue + data.Hours_Wed + data.Hours_Thu + data.Hours_Fri + data.Hours_Sat + data.Hours_Sun;
+                    total += sum;
+                    if (topSubHours < sum)
+                    {
+                        topSubHours = sum;
+                        topSub = data.Name;
+                    }
+                    //Console.WriteLine($"    Hours - Mon: {data.Hours_Mon}, Tue: {data.Hours_Tue}, Wed: {data.Hours_Wed}, Thu: {data.Hours_Thu}, Fri: {data.Hours_Fri}, Sat: {data.Hours_Sat}, Sun: {data.Hours_Sun}");
+                    counter++;
+                }
+                outputText += $"Total: {total}\n";
+                outputText += $"Average: {total / counter:F2}\n";
+                outputText += $"Top Subject: {topSub} with {topSubHours} hours\n\n";
+            }
+            return outputText;
+        }
         static public List<DataFromFile> ParseCSV (string path)
         {
 
