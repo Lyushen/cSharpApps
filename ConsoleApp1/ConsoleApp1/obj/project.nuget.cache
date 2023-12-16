@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9lTq+oP7kUWLHHXuJKJftYvm3x0/nyrWTNNsvCFf9rN2aYooyudTSaT77d7W5BlhNmM6LdYNX4BzUw5rW37tuw==",
+  "dgSpecHash": "qamX8Gi7H1sYMQeoqwccxHJx5lI4pZBOq7R4uGsUa4+d0hMpqaKJP8AusXeq8Q/BH32XScgUiKSgXFYKOKv/Pw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Oleksii\\source\\repos\\cSharpApps\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+  "projectFilePath": "C:\\Users\\Oleksii\\Source\\Repos\\cSharpApps\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Oleksii\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
     "C:\\Users\\Oleksii\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
