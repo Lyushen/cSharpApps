@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qamX8Gi7H1sYMQeoqwccxHJx5lI4pZBOq7R4uGsUa4+d0hMpqaKJP8AusXeq8Q/BH32XScgUiKSgXFYKOKv/Pw==",
+  "dgSpecHash": "+06eiSim03u8ghOrooK5eU1Hf6znZBkgTyk9u96EwUoCxFssz+w5r84UQtpP3c51G0FVhtFEJiM6zC0di8RDvw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Oleksii\\Source\\Repos\\cSharpApps\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\Oleksii\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
-    "C:\\Users\\Oleksii\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
-    "C:\\Users\\Oleksii\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512",
-    "C:\\Users\\Oleksii\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.14\\microsoft.netcore.app.host.win-x64.7.0.14.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\ICTLearner10\\Source\\Repos\\Lyushen\\cSharpApps\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }
